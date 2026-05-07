@@ -19,6 +19,11 @@ defaults:
       type: pages
     values:
       layout: default
+  - scope:
+      path: "dashboard"
+    values:
+      layout: null
+      sitemap: false
 
 # Site-wide navigation links shown on every page
 navigation:
