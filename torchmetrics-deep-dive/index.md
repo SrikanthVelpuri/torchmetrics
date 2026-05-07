@@ -152,12 +152,43 @@ Each domain page now also includes an **Interview Drill-Down** section with mult
 
 ---
 
-## 🎯 Interactive dashboard
+## 🎓 [Mastery Hub]({{ "./mastery-hub.md" | relative_url }}) — start here for interview prep
 
-For a focused **revise + quiz** workflow, open the static dashboard:
+A standalone landing page that organizes everything below into a 7-tier learning path, with a 30-day roadmap, visual cheat sheets, mnemonics, decision trees, code challenges, debug exercises, and 10 company scenarios.
+
+If you only have time to bookmark one page, bookmark the Mastery Hub.
+
+---
+
+## 🎯 Interactive Mastery Dashboard
+
+A static, self-contained HTML app with **six modes**:
 
 [**▶ Open the dashboard →**](./dashboard/index.html)
 
-- **Revise mode**: every topic summarized for fast review.
-- **Quiz mode**: interview questions with reveal-on-click multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).
-- Works offline — just open `dashboard/index.html` in a browser. No build step.
+- **📖 Revise** — concise summaries of every topic.
+- **🎯 Quiz** — multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).
+- **🃏 Flashcards** — flip cards with 1–5★ confidence rating.
+- **🎲 Random Mix** — random question from anywhere.
+- **🃏 Flashcards (All)** — weak-first spaced repetition queue.
+- **📊 Mastery Map** — heat-map of confidence across all questions.
+
+Confidence ratings persist in `localStorage`. Color-coded sidebar pips show your weak topics at a glance.
+
+---
+
+## New mastery pages
+
+| Page | Purpose |
+|---|---|
+| [🎓 Mastery Hub]({{ "./mastery-hub.md" | relative_url }}) | The master entry — everything organized into a 7-tier path. |
+| [📅 Mastery Roadmap]({{ "./mastery-roadmap.md" | relative_url }}) | 30 days, 45 min/day, structured. |
+| [📑 Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) | 18 visual one-pagers — print and pin. |
+| [🧠 Mnemonics]({{ "./mnemonics.md" | relative_url }}) | 21 memory hooks (RUUCC, MEPP, PRINCE, …). |
+| [🌳 Decision Trees]({{ "./metric-decision-tree.md" | relative_url }}) | "Which metric for X?" flowcharts. |
+| [📦 Wrappers Deep Dive]({{ "./wrappers-deep-dive.md" | relative_url }}) | All 11 wrappers with composition recipes. |
+| [➕ Aggregation, Clustering, Pairwise, Nominal]({{ "./aggregation-clustering-pairwise.md" | relative_url }}) | The under-documented metric families. |
+| [💻 Code Challenges]({{ "./code-challenges.md" | relative_url }}) | 12 implement-from-scratch problems. |
+| [🐛 Spot the Bug]({{ "./spot-the-bug.md" | relative_url }}) | 15 buggy snippets — debug, then check. |
+| [🔢 Numerical Pitfalls]({{ "./numerical-pitfalls.md" | relative_url }}) | NaN, precision, edge cases. |
+| [🏢 Extended Company Scenarios]({{ "./extended-company-scenarios.md" | relative_url }}) | Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, more. |

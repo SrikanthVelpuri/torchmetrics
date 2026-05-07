@@ -22,8 +22,18 @@ defaults:
 
 # Site-wide navigation links shown on every page
 navigation:
+  - title: 🎓 Mastery Hub
+    url: ./mastery-hub.html
   - title: Home
     url: ./index.html
+  - title: Mastery Roadmap
+    url: ./mastery-roadmap.html
+  - title: Cheat Sheets
+    url: ./cheat-sheets.html
+  - title: Mnemonics
+    url: ./mnemonics.html
+  - title: Decision Trees
+    url: ./metric-decision-tree.html
   - title: Getting Started
     url: ./getting-started.html
   - title: Core Concepts
@@ -38,12 +48,22 @@ navigation:
     url: ./retrieval-metrics.html
   - title: Text / Audio / Image
     url: ./text-audio-image-metrics.html
+  - title: Aggregation, Clustering, Pairwise
+    url: ./aggregation-clustering-pairwise.html
   - title: Distributed Training
     url: ./distributed-training.html
   - title: PyTorch Lightning
     url: ./pytorch-lightning-integration.html
   - title: Custom Metrics
     url: ./custom-metrics.html
+  - title: Wrappers Deep Dive
+    url: ./wrappers-deep-dive.html
+  - title: Code Challenges
+    url: ./code-challenges.html
+  - title: Spot the Bug
+    url: ./spot-the-bug.html
+  - title: Numerical Pitfalls
+    url: ./numerical-pitfalls.html
   - title: Production Scenarios
     url: ./production-scenarios.html
   - title: Testing & Validation
@@ -56,6 +76,8 @@ navigation:
     url: ./system-design-questions.html
   - title: ML ↔ Business Metrics
     url: ./ml-business-metrics.html
+  - title: Extended Company Scenarios
+    url: ./extended-company-scenarios.html
   - title: Scenario Setups
     url: ./scenario-setups.html
   - title: Troubleshooting

@@ -1,63 +1,69 @@
-# TorchMetrics Deep Dive Dashboard
+# TorchMetrics Mastery Dashboard
 
-A static, single-page HTML dashboard for revising the TorchMetrics Deep Dive content
-and stress-testing yourself with multi-level interview questions.
+Six modes for revising and stress-testing your TorchMetrics knowledge.
 
-## How to use
-
-Just open `index.html` in your browser. No build step, no server required.
+## Open it
 
 ```bash
-# macOS
-open index.html
-
-# Linux
-xdg-open index.html
-
-# Windows
-start index.html
+open index.html        # macOS
+xdg-open index.html    # Linux
+start index.html       # Windows
 ```
 
-Or serve it with any static server if you prefer:
+Or any static server:
 
 ```bash
 python -m http.server --directory dashboard 8080
-# then visit http://localhost:8080
+# visit http://localhost:8080
 ```
 
 ## Modes
 
-- **📖 Revise** — concise topic summaries (formulae, code patterns, decision rules).
-- **🎯 Quiz** — interview questions with multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).
-  Click *Show answer* to reveal each answer, then click each *Show follow-up* to drill
-  one level deeper.
+### Per-topic modes (top-right toggle)
 
-## Topics
+- **📖 Revise** — concise topic summaries (formulae, code, decision rules).
+- **🎯 Quiz** — interview questions with reveal-on-click multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).
+- **🃏 Flashcards** — one card at a time, flip to reveal, rate confidence 1–5★.
 
-Organized into seven categories:
+### Global modes (sidebar)
 
-1. **Foundations** — Getting Started, Core Concepts, Metric Class Internals.
-2. **Domain Metrics** — Classification, Regression, Retrieval, Text/Audio/Image.
-3. **Distributed & Lightning** — DDP, PyTorch Lightning Integration.
-4. **Custom & Production** — Custom Metrics, Production Scenarios.
-5. **Interview Prep** — Quick-fire, System Design.
-6. **Business Mapping** — American Airlines, Amazon, Scenario Setups.
-7. **Reference** — Troubleshooting.
+- **🎲 Random Mix** — random question from anywhere; practice unpredictability.
+- **🃏 Flashcards (All)** — weak-first queue across all topics, ordered by lowest confidence + oldest seen.
+- **📊 Mastery Map** — heat-map of every question colored by your confidence. Click any cell to jump.
+
+## Confidence ratings (★)
+
+Every question has a 5-star rating. Click any star to commit (click the same star to clear).
+
+- **Persisted to `localStorage`** (key: `tm-confidence`).
+- **Drives the weak-first queue** in Flashcards (All).
+- **Color-codes the sidebar** (red = weak, green = strong).
+- **Resettable** via the sidebar's "↺ Reset progress" button.
 
 ## Keyboard shortcuts
 
-- `R` — switch to Revise mode
-- `Q` — switch to Quiz mode
-- `←` / `→` — previous / next question (in Quiz mode)
+- `R` — switch to Revise
+- `Q` — switch to Quiz
+- `F` — switch to Flashcards
+- `Space` — flip card (in Flashcards mode)
+- `1` – `5` — rate confidence after flipping
+- `←` / `→` — previous / next
 
 ## Files
 
 | File | Purpose |
 |---|---|
 | `index.html` | Page structure |
-| `styles.css` | All styling |
+| `styles.css` | Clean modern UI |
 | `data.js` | All topics, summaries, and Q&A trees |
-| `app.js` | Mode switching, search, quiz state, rendering |
+| `app.js` | Mode switching, search, quiz/flash state, confidence persistence |
 
-To extend with your own topics, edit `data.js`. The topic schema is documented in
-that file's header comment.
+## Suggested daily ritual
+
+```
+25 min   Revise (one topic per day from the roadmap)
+10 min   Random Mix (5–10 random cards)
+ 5 min   Flashcards (All) — drill the weak-first queue
+```
+
+After 30 days at this pace, the Mastery Map should be mostly green. That's interview-ready.
