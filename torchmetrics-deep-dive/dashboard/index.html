@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TorchMetrics Deep Dive — Mastery Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">TM</div>
+      <div>
+        <div class="brand-title">TorchMetrics</div>
+        <div class="brand-sub">Mastery Dashboard</div>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="Search topics & questions…" />
+    </div>
+
+    <div class="global-modes">
+      <button class="gm-btn" data-gmode="random">🎲 Random Mix</button>
+      <button class="gm-btn" data-gmode="flashcards-all">🃏 Flashcards (All)</button>
+      <button class="gm-btn" data-gmode="mastery">📊 Mastery Map</button>
+    </div>
+
+    <nav id="nav"></nav>
+
+    <div class="sidebar-footer">
+      <div class="legend">
+        <div><span class="dot dot-read"></span> Revise</div>
+        <div><span class="dot dot-quiz"></span> Quiz</div>
+        <div><span class="dot dot-flash"></span> Flash</div>
+      </div>
+      <button class="reset-progress" id="reset-progress" title="Clear all confidence ratings">
+        ↺ Reset progress
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="crumbs">
+        <span id="crumb-cat" class="crumb-cat">—</span>
+        <span class="crumb-sep">›</span>
+        <span id="crumb-topic" class="crumb-topic">Pick a topic</span>
+      </div>
+      <div class="modes" id="topic-modes">
+        <button class="mode-btn active" data-mode="read">📖 Revise</button>
+        <button class="mode-btn" data-mode="quiz">🎯 Quiz</button>
+        <button class="mode-btn" data-mode="flash">🃏 Flashcards</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <div id="welcome" class="welcome">
+        <h1>TorchMetrics Mastery Dashboard</h1>
+        <p class="lead">Six modes for getting from "I've heard of TorchMetrics" to "I can answer any question."</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">📖</div>
+            <h3>Revise</h3>
+            <p>Concise topic summaries with formulae, code patterns, and tables.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Quiz</h3>
+            <p>Interview questions with multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🃏</div>
+            <h3>Flashcards</h3>
+            <p>One card at a time. Flip, rate confidence (1–5 stars), spaced repetition surfaces weak ones.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎲</div>
+            <h3>Random Mix</h3>
+            <p>Random question from anywhere — practice for unpredictable interviews.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <h3>Mastery Map</h3>
+            <p>Visual heat-map of your confidence across every topic. See exactly where to drill.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏢</div>
+            <h3>Business mapping</h3>
+            <p>10 companies — Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, AA, Amazon.</p>
+          </div>
+        </div>
+        <div class="getting-started">
+          <h3>Suggested 30-day path</h3>
+          <ol>
+            <li>Foundations (Days 1–7) — Getting Started, Core Concepts, Internals</li>
+            <li>Domains (Days 8–14) — pick yours and skim others</li>
+            <li>Depth (Days 15–21) — DDP, Lightning, Wrappers, Custom, Code Challenges</li>
+            <li>Mastery (Days 22–30) — Spot-the-bug, Numerical, Business, Mock interviews</li>
+          </ol>
+          <p style="margin-top:14px;font-size:13px;color:var(--text-muted);">
+            <b>Daily ritual:</b> 25 min revise + 10 min Random Mix + 5 min flashcards on weak topics.
+            <br>
+            <b>Tip:</b> Use <kbd>R</kbd>/<kbd>Q</kbd>/<kbd>F</kbd> to switch modes; <kbd>←</kbd>/<kbd>→</kbd> to navigate.
+          </p>
+        </div>
+      </div>
+
+      <article id="read-view" class="read-view hidden"></article>
+      <div id="quiz-view" class="quiz-view hidden"></div>
+      <div id="flash-view" class="flash-view hidden"></div>
+      <div id="mastery-view" class="mastery-view hidden"></div>
+    </section>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
