@@ -120,3 +120,71 @@ Three patterns from this file generalize:
 1. **Sufficient statistics**: keep `sum` and `count` separately, divide in `compute()`.
 2. **Tensor states with `dim_zero_sum` reduction**: works perfectly across DDP.
 3. **`is_differentiable = True`**: MAE can be used inside a loss; gradients flow through `compute()`.
+
+---
+
+## Interview Drill-Down (multi-level follow-ups)
+
+### Q1. MAE vs MSE vs RMSE — when do you pick which?
+
+> MAE is robust to outliers, in target units, but non-differentiable at zero. MSE penalizes large errors quadratically, differentiable everywhere — usually the training loss. RMSE is √MSE; same units as the target, so reportable. **Train with MSE, report RMSE alongside MAE.**
+
+  **F1.** What if your target has heavy-tailed errors?
+
+  > MSE is dominated by the tails. Either (a) clip targets, (b) train with Huber / log-cosh (smooth-MAE-like), (c) train in log-space and report metrics on transformed-back values.
+
+    **F1.1.** Won't training in log-space distort the metric?
+
+    > Yes — `MSE(log y, log ŷ)` is "relative-error MSE" not "absolute MSE." TorchMetrics has `MeanSquaredLogError` for this case. Always report the metric you trained on **and** the original-space metric.
+
+      **F1.1.1.** Why both?
+
+      > Researchers compare against papers using whatever original-space metric is canonical (MAE, RMSE). Internal monitoring uses the loss-aligned metric to track training. Different audiences, different numbers, both honest.
+
+### Q2. Why is MAPE dangerous in production?
+
+> Divides by `y`. When `y` is near zero, MAPE explodes. A handful of low-volume rows can dominate the mean.
+
+  **F1.** What replaces MAPE for forecasting?
+
+  > **wMAPE** (`Σ|err| / Σ|y|`) for global accuracy and **SMAPE** for symmetric percentage error. Different teams expect different defaults; report both.
+
+    **F1.1.** SMAPE has its own pathologies — what are they?
+
+    > When both `y` and `ŷ` are near zero, the denominator is also near zero. SMAPE is bounded between 0 and 200 % but can flicker wildly on near-zero values. Below a threshold, suppress the percentage and report absolute error.
+
+      **F1.1.1.** What if business stakeholders insist on MAPE?
+
+      > Compute it but with a floor (`max(|y|, 1)` or similar) — and explicitly document the floor in the metric name (`MAPE_floor1`). Hidden flooring in a metric is malpractice.
+
+### Q3. R² can be negative. Why, and what do you do about it?
+
+> R² < 0 means your model predicts worse than the constant-mean baseline. It's a real signal, not a bug. Either the model is broken, the eval split is mis-distributed, or the data has near-zero predictability.
+
+  **F1.** Why doesn't TorchMetrics clamp R² to [0, 1]?
+
+  > Because clamping hides the bug. A negative R² is informative — it tells you something is wrong. Silently coercing it would make the metric useless for diagnosis.
+
+    **F1.1.** What's a sane action when production R² goes negative?
+
+    > Page on-call. Either the data pipeline is broken (wrong join, label leakage flipped) or the model is mis-deployed. Negative R² in prod is almost always an infra issue, not a model issue.
+
+      **F1.1.1.** How do you alert on R² thresholds?
+
+      > Track `R²` as a `Running` metric over a rolling window; emit to the time-series store; alert when window-R² crosses a threshold for N consecutive windows. The N-consecutive guard prevents single-bad-batch false alarms.
+
+### Q4. Pearson, Spearman, Kendall — when do you pick which?
+
+> Pearson: linear correlation, parametric assumption. Spearman: monotonic correlation via ranks, non-parametric, robust. Kendall τ: rank concordance, very robust but O(n²) — slow at scale.
+
+  **F1.** When does Pearson lie to you?
+
+  > Whenever the relationship is non-linear (e.g. exponential, sigmoidal). Pearson on `(x, exp(x))` data is much less than 1, despite a perfect monotonic relationship.
+
+    **F1.1.** Why is Spearman a list-state metric in TorchMetrics?
+
+    > Computing ranks requires the full sample. There's no streaming algorithm that gives exact ranks in O(1) memory. List state with `cat` reduction is the only correct option.
+
+      **F1.1.1.** Approximate streaming Spearman?
+
+      > Sketch-based. Run a quantile sketch (t-digest or KLL) on both `y` and `ŷ`, get approximate rank for each new sample, accumulate Pearson-of-ranks. Approximate; bounded error. Not in TorchMetrics core; viable as a custom metric.

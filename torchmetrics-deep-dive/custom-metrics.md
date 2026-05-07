@@ -181,3 +181,71 @@ To match the rest of the library, your metric should:
 5. **Don't compute** in `update()` — keep math in `compute()` so the metric is restartable.
 6. **Don't mutate inputs** — copy if you need to.
 7. **Don't depend on insertion order** — DDP `cat` does not guarantee order across ranks.
+
+---
+
+## Interview Drill-Down (multi-level follow-ups)
+
+### Q1. You wrote a custom metric and it works on 1 GPU, fails silently on 4. What do you check first?
+
+> Three things, in order: (1) every state is a `Tensor` or list of `Tensor` (not Python list of floats); (2) every state has an explicit `dist_reduce_fx`; (3) reductions are associative. Most "works on 1 GPU" failures are missing reductions — state stacks across ranks but doesn't reduce, then `compute()` does the wrong math.
+
+  **F1.** What does "doesn't reduce" actually look like in state?
+
+  > After sync, your `tp` tensor has shape `(world_size, ...)` instead of `(...)` — `compute()` treats the rank dimension as data. The bug is in `add_state(..., dist_reduce_fx=None)`. Specify a reduction.
+
+    **F1.1.** A state can't be both a tensor and a list. How do you decide?
+
+    > Tensor for sufficient statistics (counts, sums) — cheap, summable, DDP-friendly. List for raw observations (preds, targets) when the metric needs them all. Almost every metric you write should be tensor-state; only fall back to list-state when the math truly demands it.
+
+      **F1.1.1.** A senior asks you to convert a list-state metric to tensor-state. How?
+
+      > Find the sufficient statistic. For AUROC, it's binned counts of positives and totals — bin predictions, accumulate per-bin totals. The metric becomes approximate but tensor-state, dramatically more memory-efficient.
+
+### Q2. You set `full_state_update=False` but `forward()` returns wrong batch values. Why?
+
+> `_forward_reduce_state_update` assumes batch state can be merged into the global state via the registered reduction. If your reduction is non-trivial (e.g. you need the full population to compute), the merge will be wrong.
+
+  **F1.** When is the merge wrong even with `sum` reduction?
+
+  > When `compute()` divides by something that depends on global state. Example: a "running mean" metric where compute is `sum / count`; both are sum-reduced. The fast-path forward computes `batch_sum / batch_count` and that's the correct *batch value*. But if you accidentally read `self.global_count` inside compute, the batch value is wrong.
+
+    **F1.1.** How do you tell?
+
+    > Run a unit test: do one big update, vs. two half-size updates, both via `forward()`. The two batch values must be `forward(batch1) → m1, forward(batch2) → m2`, with `compute()` matching the single-update result. If the batch values are wrong but `compute` is right, your update is fine but the fast-path forward is broken — set `full_state_update=True`.
+
+      **F1.1.1.** What's the cost of `full_state_update=True`?
+
+      > Two `update()` calls per `forward()`. For most metrics this is a minor slowdown. For metrics where `update` is expensive (encoding text via BERT, etc.), it's substantial — invest in fixing the fast-path conditions instead.
+
+### Q3. How do you make a custom metric that depends on **per-sample weights**?
+
+> Add `weights` as a third argument to `update`. Inside, multiply `(preds, target)` element-wise by the weights before accumulating. State stays the same shape; only `update`'s body changes.
+
+  **F1.** What if weights aren't always provided (back-compat)?
+
+  > Make `weights` default to `None`. Inside `update`, branch: `weights = weights if weights is not None else torch.ones_like(target)`. The metric still works for un-weighted callers.
+
+    **F1.1.** Could you do this in `forward()` rather than asking callers to pass weights every time?
+
+    > Yes — but `forward(*args, **kwargs)` and `update(*args, **kwargs)` share signatures. Adding optional `weights` to both is the clean approach. If the metric should *always* be weighted, make `weights` required.
+
+      **F1.1.1.** What if some callers pass weights, others don't, and your `MetricCollection` mixes them?
+
+      > Compute groups will fail (different update signatures). Either (a) make weighted and unweighted versions distinct metrics in the collection, or (b) make all metrics accept the unified signature with optional weights. Option (b) is cleaner long-term.
+
+### Q4. How do you write a custom metric that does **bootstrap CI** internally?
+
+> Maintain N parallel copies of your states (e.g. `sum_i_j` for j in 1..N). For each `update`, sample which copies the batch goes into via Poisson(1) (the standard bootstrap with-replacement). At `compute`, you get N metric values; report mean ± quantile range.
+
+  **F1.** Why Poisson(1) and not "pick K samples uniformly"?
+
+  > Poisson(1) is the asymptotic limit of with-replacement sampling — each item appears in each bootstrap copy with the right multinomial expectation. It's also memory-efficient: you don't need to store sample IDs, just sample-by-sample inclusion counts.
+
+    **F1.1.** Isn't this just `BootStrapper`?
+
+    > Yes — and you should use `BootStrapper` instead of writing your own unless you need a custom resampling strategy (e.g. paired bootstrap, stratified bootstrap). Most use cases are covered by the wrapper.
+
+      **F1.1.1.** When would you write a custom paired bootstrap?
+
+      > A/B comparison of two models on the same data. The right CI is over the *paired difference*, not over each model independently. Custom wrapper that maintains synced sample indices for both models.

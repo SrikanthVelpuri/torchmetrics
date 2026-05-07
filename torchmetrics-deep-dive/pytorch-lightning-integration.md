@@ -158,3 +158,71 @@ def on_validation_epoch_end(self):
 ## Lightning Fabric
 
 If you use Fabric instead of Trainer, the contract is simpler — you call `update`/`compute`/`reset` yourself, and TorchMetrics' built-in DDP sync still works because Fabric initializes `torch.distributed` for you. Lightning Fabric does not auto-move metrics; you must do `metric = fabric.setup_module(metric)` or `metric.to(fabric.device)` yourself.
+
+---
+
+## Interview Drill-Down (multi-level follow-ups)
+
+### Q1. Why pass the metric object to `self.log()` instead of `metric.compute()`?
+
+> Lightning treats a `Metric` instance specially — it understands the `forward → compute → reset` lifecycle and aligns with `on_step` / `on_epoch` hooks. Passing `metric.compute()` collapses the metric to a scalar, and Lightning has no idea it should reset, sync, or accumulate.
+
+  **F1.** What goes wrong if you do `self.log("acc", metric.compute())` inside training_step?
+
+  > Lightning logs whatever scalar `compute()` returned — likely the cached value from the last sync, possibly stale. State isn't reset, so next epoch's `compute()` includes this epoch's data. The metric "value" trends look correct for ~1 epoch and then go monotonic forever.
+
+    **F1.1.** Why doesn't Lightning warn when you make this mistake?
+
+    > It can't tell — the argument is a Tensor, indistinguishable from any other scalar log. Recent Lightning versions warn for some patterns, but in general the only reliable signal is your weird-looking metric trace.
+
+      **F1.1.1.** How do you guard against this in code review?
+
+      > Add a lint rule (or a custom regex pre-commit hook) that flags `.compute()` calls inside `training_step` / `validation_step`. Pair with a unit test that asserts metric `_update_count == 0` at the start of each epoch.
+
+### Q2. What's the actual difference between `on_step=True, on_epoch=True` and only `on_epoch=True`?
+
+> `on_step=True` calls `metric.forward(...)` per batch and logs the per-batch value. `on_epoch=True` calls `metric.compute()` at the appropriate epoch hook and logs that. Setting both means you get two TensorBoard series: `acc_step` and `acc_epoch`.
+
+  **F1.** Doesn't `forward()` and `update()` together double-count state?
+
+  > No — `forward()` calls `update()` exactly once internally. The two-pass behavior of `_forward_full_state_update` resets and re-updates *to compute the per-batch value*, but the global state increments only once. (See Metric Class Internals for the full trace.)
+
+    **F1.1.** What if I want only the epoch number for training (no per-step series)?
+
+    > `on_step=False, on_epoch=True`. Lightning will only log at epoch end. This is cheaper to log (one number per epoch) but you lose the mid-epoch stability signal.
+
+      **F1.1.1.** Is per-step logging really cheap in DDP?
+
+      > Yes, *if* the metric doesn't sync per step (the default). Logging the local-rank `forward()` value is roughly free. The cost spike comes from `dist_sync_on_step=True`, which is unrelated to whether you log.
+
+### Q3. You define metrics in `__init__` — why is that critical?
+
+> So Lightning's `.to(device)` traversal moves them to the right device. Storing a metric in a dict (`self.metrics = {"acc": Accuracy()}`) bypasses `nn.Module.__setattr__` and Lightning never sees it — device-mismatch error follows.
+
+  **F1.** Why does `MetricCollection` (which is a dict-like) work, then?
+
+  > Because `MetricCollection` extends `nn.ModuleDict`, which *does* register children. Setting `self.metrics = MetricCollection(...)` is correct; setting `self.metrics = {...}` is broken.
+
+    **F1.1.** What if you have a list of metrics (one per dataloader)?
+
+    > Use `nn.ModuleList(metrics)` so they're properly registered. Plain Python lists fail the same way as dicts.
+
+      **F1.1.1.** Why doesn't TorchMetrics ship a `MetricList` class?
+
+      > `nn.ModuleList` does the job; it's polymorphic with `Metric` already. No need for a wrapper.
+
+### Q4. `metrics.clone(prefix="train/")` — what does it actually do?
+
+> Deep-copies the entire `MetricCollection` and prepends `"train/"` to every key. Each cloned metric has its own state. Lightning's auto-namespacing then produces `"train/acc"`, `"train/f1"`, etc., in the log.
+
+  **F1.** Why deep-copy and not just rename keys?
+
+  > Different states. If you used the same instance for train and val, every `update()` you do in `validation_step` adds to the *same* state as `training_step`. Validation accuracy would silently include training data.
+
+    **F1.1.** How much memory does cloning cost?
+
+    > As much as the original metric state. Tensor states: trivial. List states: doubles. For 50k-sample AUROC list states, clone before fitting — and consider `compute_on_cpu=True`.
+
+      **F1.1.1.** When is it OK to *not* clone?
+
+      > Test-time-only metrics (no training-time use). Or read-only inspection metrics where you accept they'll see all phases. Default to clone; deviate only with intent.

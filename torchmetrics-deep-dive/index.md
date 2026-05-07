@@ -134,6 +134,8 @@ TorchMetrics handles all of these in the base class, so the metric author only w
 | [Interview Questions]({{ "./interview-questions.md" | relative_url }}) | 25+ ML-engineering interview questions with model answers. |
 | [Follow-Up Questions]({{ "./follow-up-questions.md" | relative_url }}) | The "drill-down" questions interviewers actually ask. |
 | [System Design Questions]({{ "./system-design-questions.md" | relative_url }}) | Designing a metrics service for a recommender, an LLM, a CV pipeline. |
+| [ML ↔ Business Metrics]({{ "./ml-business-metrics.md" | relative_url }}) | Connecting ML metrics to business KPIs at American Airlines and Amazon. |
+| [Scenario Setups]({{ "./scenario-setups.md" | relative_url }}) | How metrics are wired in real ML systems (CV, NLP, speech, recsys, time-series, anomaly). |
 | [Troubleshooting]({{ "./troubleshooting.md" | relative_url }}) | The bugs you will hit and how to fix them. |
 
 ---
@@ -143,4 +145,7 @@ TorchMetrics handles all of these in the base class, so the metric author only w
 1. Skim **Getting Started** and run the snippets locally.
 2. Then **Core Concepts** and **Metric Class Internals** — these unlock everything else.
 3. Pick the **domain page** (classification / regression / …) you actually need.
-4. Use the **interview / system-design** pages as a self-test before an interview.
+4. Use the **interview / follow-up / system-design** pages as a self-test before an interview.
+5. For staff-level prep, read **ML ↔ Business Metrics** and **Scenario Setups** — these tie the library to real product / company decisions.
+
+Each domain page now also includes an **Interview Drill-Down** section with multi-level follow-ups (Q → F1 → F1.1 → F1.1.1) so you can practice the way real interviewers escalate.

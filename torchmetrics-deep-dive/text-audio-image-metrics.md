@@ -166,3 +166,71 @@ For an ASR model:
 | Character-level | CER |
 | Latency-oriented | Custom (RTF) |
 | Fairness across accents | Per-bucket WER |
+
+---
+
+## Interview Drill-Down (multi-level follow-ups)
+
+### Q1. BLEU vs ROUGE — when to use which?
+
+> BLEU is **precision-oriented** (n-gram precision with brevity penalty) — used for MT where over-generation is penalized. ROUGE is **recall-oriented** — used for summarization where hitting the reference content matters more than not adding extras.
+
+  **F1.** Why does BLEU have a brevity penalty?
+
+  > Without it, a 1-word output that matches one reference word would have perfect n-gram precision. The brevity penalty `exp(1 - r/c)` punishes too-short outputs.
+
+    **F1.1.** Why does sentence-BLEU give weird numbers compared to corpus-BLEU?
+
+    > BLEU's geometric mean of n-gram precisions is fragile on short text. Smoothing methods (Chen-Cherry, etc.) are needed for sentence-level. Even then, sentence-BLEU is widely considered unreliable. Always prefer corpus-level reporting.
+
+      **F1.1.1.** What metric do you use for *sentence-level* MT evaluation?
+
+      > chrF (`CHRFScore`) is more stable than sentence-BLEU. Or BERTScore for semantic similarity. Modern WMT submissions report COMET (a learned metric) — not in TorchMetrics, but in the same vein.
+
+### Q2. FID at 1k samples vs FID at 50k samples — why differ?
+
+> FID is biased downward at small N — covariance estimates have high variance. The bias decreases as 1/N. Two papers comparing at different N are not comparable.
+
+  **F1.** How do you mitigate small-N bias?
+
+  > Use KID (Kernel Inception Distance). KID's MMD estimator is unbiased even at small N. It's what to report when you genuinely can't run 50k samples.
+
+    **F1.1.** Why isn't KID the default if it's better?
+
+    > FID is the historical literature standard. Papers report FID for backward comparability. KID is a complement, not a replacement.
+
+      **F1.1.1.** What's the right report?
+
+      > Both, with N. "FID@10k = X, KID@10k = Y" is more honest than either alone.
+
+### Q3. Why is BERTScore expensive?
+
+> Each call runs a transformer (default `roberta-large`) over both reference and hypothesis. ~1 GFLOP per token-pair. Bottleneck for any text eval at scale.
+
+  **F1.** How do you make it cheaper without losing fidelity?
+
+  > Distillation: compute BERTScore with `roberta-large` on a held-out set; compute it with a smaller model on the same set; train a calibration regression from small to large. Use the calibrated small-model score in production.
+
+    **F1.1.** Doesn't that lose interpretability?
+
+    > Yes — your numbers no longer compare to literature BERTScore-large. You document this and only use the cheap version for relative comparisons (model-vs-model), not absolute reporting.
+
+      **F1.1.1.** What's the rule for when relative-only is fine?
+
+      > Internal model selection (which checkpoint to ship?) is fine. External benchmarking (paper, blog post, claim of "X is best") needs the canonical metric. The interpretability cost is the cost of the speed-up.
+
+### Q4. PESQ for speech quality — why is it not differentiable?
+
+> PESQ wraps a C reference implementation that includes psychoacoustic filtering, time alignment, and disturbance modeling. None of those steps are differentiable, and the official ITU implementation is not designed to be.
+
+  **F1.** What do you use as a *training* loss for speech enhancement instead?
+
+  > SI-SDR (`ScaleInvariantSignalDistortionRatio`) is differentiable and used widely as the training signal. STOI variants exist as differentiable surrogates (`NegSTOI`).
+
+    **F1.1.** Why train SI-SDR but report PESQ?
+
+    > Different audiences. Researchers train on what optimizes well; product teams report what reviewers know. SI-SDR ↔ PESQ correlation is high but not 1.0 — you're trusting that correlation.
+
+      **F1.1.1.** What if the correlation breaks for your model?
+
+      > Train multi-objective: weighted sum of SI-SDR and a differentiable surrogate for the perceptual signal you actually care about. Or run human MOS evaluation as the final gate.

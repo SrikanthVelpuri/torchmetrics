@@ -54,6 +54,10 @@ navigation:
     url: ./follow-up-questions.html
   - title: System Design
     url: ./system-design-questions.html
+  - title: ML ↔ Business Metrics
+    url: ./ml-business-metrics.html
+  - title: Scenario Setups
+    url: ./scenario-setups.html
   - title: Troubleshooting
     url: ./troubleshooting.html
 

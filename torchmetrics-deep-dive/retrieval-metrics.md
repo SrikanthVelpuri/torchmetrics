@@ -126,3 +126,71 @@ Retrieval metrics share machinery via `torchmetrics.retrieval.base.RetrievalMetr
 3. Stacks the per-query values and aggregates.
 
 This pattern — **list state + per-group reduce in `compute`** — is the canonical recipe for any retrieval-style metric, including any custom one you might write.
+
+---
+
+## Interview Drill-Down (multi-level follow-ups)
+
+### Q1. NDCG vs MAP — when do you pick which?
+
+> Both are "averaged over queries" metrics, but they handle the relevance signal differently. **MAP** assumes binary relevance and integrates over precision-at-each-relevant-rank. **NDCG** handles graded relevance via the discount factor and the gain formula. **Graded ⇒ NDCG. Binary ⇒ either, but NDCG is more flexible.**
+
+  **F1.** Why is the NDCG discount factor `1/log2(rank+1)` and not something else?
+
+  > It's empirical, calibrated against user click curves. `log2` discount falls fast at the top (rank 1 → discount 1, rank 2 → 0.63, rank 3 → 0.5) and slowly at the tail. You can change it for your domain — the math still works for any monotonically decreasing discount.
+
+    **F1.1.** Could you use a different discount based on actual click data?
+
+    > Yes — fit a click-position curve to your platform's logs and use that as the discount. Custom metric: subclass `RetrievalNDCG` and override the gain accumulator. The metric is still well-defined; the literature value just won't be comparable.
+
+      **F1.1.1.** What about position bias in the click data you use to fit the discount?
+
+      > Click data has *positional* bias (top results are clicked because they're top). Correct via inverse-propensity-scoring before fitting, or use interleaving experiments to estimate true relevance independently of position.
+
+### Q2. Recall@1000 vs Recall@10 — what's the architectural significance?
+
+> They evaluate **different stages** of a retrieval pipeline. Recall@1000 evaluates **first-stage candidate generation** — does the (cheap) ANN/BM25 retriever bring relevant items to the reranker's attention? Recall@10 evaluates the **reranker** — given the candidate set, is the top-10 right?
+
+  **F1.** What's a good first-stage recall target?
+
+  > For a 1k-candidate reranker, you want recall@1000 ≥ 95-98 %. Below 90 %, the reranker is bottlenecked by what got recalled. The reranker can't fix items it never sees.
+
+    **F1.1.** What if the first stage hits 99 % recall@1000 but the reranker only achieves 60 % NDCG@10?
+
+    > Reranker is the bottleneck. Invest in reranker capacity / features. The metric layer correctly identified the layer to fix.
+
+      **F1.1.1.** How would you decide the right candidate-set size K?
+
+      > Sweep K = {100, 500, 1000, 5000}; compute recall@K and reranker latency. Pick the smallest K where recall plateaus *and* latency fits the budget. Often the recall curve has a knee at K ≈ 1000.
+
+### Q3. The `empty_target_action` argument — what's the right default?
+
+> No universal default. `"skip"` is the most defensible (don't penalize for queries with no ground-truth-positive). `"neg"` makes the metric stricter (a query with no relevant item gets metric = 0). `"pos"` is rarely correct.
+
+  **F1.** When is `"skip"` wrong?
+
+  > When "no relevant items" is a valid signal. Example: spam detection retrieval — a query with no spam should result in zero spam pulled. Reporting that as "skipped" hides the system's correct behavior.
+
+    **F1.1.** How do you communicate the choice in your dashboards?
+
+    > Always include the *empty-target rate* (fraction of queries skipped) alongside the metric. A jump in skip rate is a leading indicator of distribution shift.
+
+      **F1.1.1.** Implement that as a metric?
+
+      > Custom metric. Two states: `n_skipped` and `n_total`, both tensor sum-reduced. `compute = n_skipped / n_total`. Add it to your retrieval `MetricCollection`.
+
+### Q4. Why is per-query aggregation `mean` by default? When isn't it right?
+
+> Mean is fair when queries are statistically similar. It's misleading on a long-tail distribution where a few high-traffic queries dominate. Then prefer **traffic-weighted mean** or **per-bucket histograms**.
+
+  **F1.** How do you implement traffic-weighted retrieval metrics?
+
+  > Pass query-level weights into a custom metric. State: `sum_weighted_metric` and `sum_weights`. `update()` weights the per-query metric by its traffic. `compute()` divides. DDP-correct via sum reduction.
+
+    **F1.1.** What if you want both un-weighted and weighted versions on the same dashboard?
+
+    > `MetricCollection({"ndcg_unweighted": RetrievalNDCG(), "ndcg_weighted": WeightedRetrievalNDCG(...)})`. Both consume the same input; collection's compute-groups won't share state because their states differ — that's fine, the cost is just slightly more memory.
+
+      **F1.1.1.** Could compute groups share state if you were clever?
+
+      > Yes — make both metrics inherit from the same base that stores `(preds, target, indexes, weights)` lists, and override only `compute`. Then `MetricCollection` will detect identical state and compute groups will kick in.
