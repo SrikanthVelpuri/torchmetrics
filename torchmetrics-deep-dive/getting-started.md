@@ -146,6 +146,6 @@ This is what you want when you also need a per-step value (e.g. to log a step-le
 
 ## What's next?
 
-- [Core Concepts]({{ "./core-concepts.md" | relative_url }}) — the mental model.
-- [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }}) — what `add_state` and `forward` actually do.
-- [Custom Metrics]({{ "./custom-metrics.md" | relative_url }}) — when you need to build your own.
+- [Core Concepts](./core-concepts.md) — the mental model.
+- [Metric Class Internals](./metric-class-internals.md) — what `add_state` and `forward` actually do.
+- [Custom Metrics](./custom-metrics.md) — when you need to build your own.

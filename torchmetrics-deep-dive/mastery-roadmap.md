@@ -55,33 +55,33 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 1 — Why TorchMetrics exists
 
-- 📖 Read: [Index]({{ "./index.md" | relative_url }}), [Getting Started]({{ "./getting-started.md" | relative_url }}).
+- 📖 Read: [Index](./index.md), [Getting Started](./getting-started.md).
 - 🎯 Quiz: 3 questions on Getting Started.
 - ✍️ Write: "What does TorchMetrics solve that I can't easily do myself?" (3 sentences.)
 
 ### Day 2 — Functional vs modular
 
-- 📖 Read: [Getting Started]({{ "./getting-started.md" | relative_url }}) — both APIs.
+- 📖 Read: [Getting Started](./getting-started.md) — both APIs.
 - 💻 Code: Write a 30-line script that uses each API on the same data and asserts they agree.
 - 🎯 Quiz: Functional vs modular question (Q1 in Getting Started).
 
 ### Day 3 — `add_state`, `update`, `compute`
 
-- 📖 Read: [Core Concepts]({{ "./core-concepts.md" | relative_url }}) — first half.
+- 📖 Read: [Core Concepts](./core-concepts.md) — first half.
 - ✍️ Draw the lifecycle diagram from memory.
 - 🎯 Quiz: 3 questions on Core Concepts.
 
 ### Day 4 — `reset` and the full lifecycle
 
-- 📖 Read: [Core Concepts]({{ "./core-concepts.md" | relative_url }}) — second half.
+- 📖 Read: [Core Concepts](./core-concepts.md) — second half.
 - 💻 Code: Write a tiny custom `MeanMetric` from scratch (no copy-paste).
 - 🎯 Quiz: lifecycle questions.
 
 ### Day 5 — `MetricCollection` and compute groups
 
-- 📖 Read: [Core Concepts]({{ "./core-concepts.md" | relative_url }}) — section "MetricCollection and compute groups".
+- 📖 Read: [Core Concepts](./core-concepts.md) — section "MetricCollection and compute groups".
 - 💻 Code: Build a `MetricCollection` of 4 classification metrics; verify the speedup vs running each separately.
-- ✍️ Mnemonic: invent your own for the 5 lifecycle methods. (Spoiler: see [Mnemonics]({{ "./mnemonics.md" | relative_url }}).)
+- ✍️ Mnemonic: invent your own for the 5 lifecycle methods. (Spoiler: see [Mnemonics](./mnemonics.md).)
 
 ### Day 6 — Quiz day
 
@@ -91,7 +91,7 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 ### Day 7 — Lifecycle diagram
 
 - 🎨 Draw the lifecycle on a whiteboard / paper. Explain it out loud as if teaching.
-- 📖 Read: [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) — lifecycle section.
+- 📖 Read: [Cheat Sheets](./cheat-sheets.md) — lifecycle section.
 - ✍️ Three things you didn't fully understand. Look them up.
 
 ---
@@ -100,37 +100,37 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 8 — Classification
 
-- 📖 Read: [Classification]({{ "./classification-metrics.md" | relative_url }}) (incl. drill-down).
+- 📖 Read: [Classification](./classification-metrics.md) (incl. drill-down).
 - 🎯 Quiz: classification.
-- ✍️ Decision tree: "Which classification metric for X?" (compare to [Decision Tree]({{ "./metric-decision-tree.md" | relative_url }})).
+- ✍️ Decision tree: "Which classification metric for X?" (compare to [Decision Tree](./metric-decision-tree.md)).
 
 ### Day 9 — Regression
 
-- 📖 Read: [Regression]({{ "./regression-metrics.md" | relative_url }}).
+- 📖 Read: [Regression](./regression-metrics.md).
 - 🎯 Quiz: regression + drill-down.
 - 💻 Code: implement `WeightedMAE` from scratch.
 
 ### Day 10 — Retrieval
 
-- 📖 Read: [Retrieval]({{ "./retrieval-metrics.md" | relative_url }}).
+- 📖 Read: [Retrieval](./retrieval-metrics.md).
 - 🎯 Quiz: retrieval + drill-down.
 - ✍️ One paragraph: why does retrieval need `indexes=`?
 
 ### Day 11 — Text / Audio / Image
 
-- 📖 Read: [Text/Audio/Image]({{ "./text-audio-image-metrics.md" | relative_url }}).
+- 📖 Read: [Text/Audio/Image](./text-audio-image-metrics.md).
 - 🎯 Quiz: text + image questions.
 - ✍️ Distinguish: "I'd use FID/KID/LPIPS/CLIPScore for…" (one line each).
 
 ### Day 12 — Detection / Segmentation
 
-- 📖 Read: [Scenario Setups]({{ "./scenario-setups.md" | relative_url }}) — detection + segmentation sections.
+- 📖 Read: [Scenario Setups](./scenario-setups.md) — detection + segmentation sections.
 - 🎯 Quiz: scenario setups (detection, segmentation).
 - ✍️ Why does mAP run on CPU?
 
 ### Day 13 — Clustering / Pairwise / Aggregation
 
-- 📖 Read: [Aggregation, Clustering, Pairwise]({{ "./aggregation-clustering-pairwise.md" | relative_url }}).
+- 📖 Read: [Aggregation, Clustering, Pairwise](./aggregation-clustering-pairwise.md).
 - 🎯 Quiz: those families.
 
 ### Day 14 — Quiz day
@@ -144,18 +144,18 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 15 — Internals line-by-line
 
-- 📖 Read: [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }}). Pull up `metric.py` in another tab.
+- 📖 Read: [Metric Class Internals](./metric-class-internals.md). Pull up `metric.py` in another tab.
 - ✍️ Draw the call stack of `metric(preds, target)` end to end.
 
 ### Day 16 — DDP
 
-- 📖 Read: [Distributed Training]({{ "./distributed-training.md" | relative_url }}).
+- 📖 Read: [Distributed Training](./distributed-training.md).
 - 🎯 Quiz: DDP drill-down (4 levels deep — go all the way).
 - ✍️ Diagram: `_sync_dist` flow.
 
 ### Day 17 — Wrappers (all of them)
 
-- 📖 Read: [Wrappers Deep Dive]({{ "./wrappers-deep-dive.md" | relative_url }}).
+- 📖 Read: [Wrappers Deep Dive](./wrappers-deep-dive.md).
 - ✍️ One sentence per wrapper saying when you'd reach for it.
 
 ### Day 18 — Build a custom metric
@@ -170,7 +170,7 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 20 — Code challenges
 
-- 💻 [Code Challenges]({{ "./code-challenges.md" | relative_url }}) — solve 5 cold (no copy).
+- 💻 [Code Challenges](./code-challenges.md) — solve 5 cold (no copy).
 - ✍️ For each, what was the gotcha?
 
 ### Day 21 — Quiz day
@@ -183,17 +183,17 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 22 — Spot-the-bug
 
-- 🐛 [Spot the Bug]({{ "./spot-the-bug.md" | relative_url }}) — work through all of them.
+- 🐛 [Spot the Bug](./spot-the-bug.md) — work through all of them.
 - ✍️ Tally: which kind of bug did you miss most often? (Probably DDP-related.)
 
 ### Day 23 — Numerical pitfalls
 
-- 📖 [Numerical Pitfalls]({{ "./numerical-pitfalls.md" | relative_url }}).
+- 📖 [Numerical Pitfalls](./numerical-pitfalls.md).
 - ✍️ Three pitfalls you didn't know about.
 
 ### Day 24 — ML→business: American Airlines
 
-- 📖 Read: [ML ↔ Business]({{ "./ml-business-metrics.md" | relative_url }}) — AA section only.
+- 📖 Read: [ML ↔ Business](./ml-business-metrics.md) — AA section only.
 - 🎯 Quiz: AA drill-downs (full depth).
 - ✍️ Pitch deck: "How would I evaluate the new delay-prediction model to AA's revenue management VP?" 1 slide, 3 bullets.
 
@@ -205,12 +205,12 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 26 — ML→business: extended
 
-- 📖 [Extended Company Scenarios]({{ "./extended-company-scenarios.md" | relative_url }}).
+- 📖 [Extended Company Scenarios](./extended-company-scenarios.md).
 - ✍️ Pick one that interests you most. Write the metric stack from memory.
 
 ### Day 27 — System design
 
-- 📖 [System Design Questions]({{ "./system-design-questions.md" | relative_url }}).
+- 📖 [System Design Questions](./system-design-questions.md).
 - ✍️ Pick one prompt. Whiteboard it (45 min, on paper, no notes).
 
 ### Day 28 — Mock interview I
@@ -220,7 +220,7 @@ The 5-min RECALL at the start is the most important block. **Active recall beats
 
 ### Day 29 — Cheat-sheet recall
 
-- ✍️ Reproduce from memory: lifecycle, classification decision tree, MAE/MSE/RMSE table, NDCG formula, FID formula. Compare to [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}).
+- ✍️ Reproduce from memory: lifecycle, classification decision tree, MAE/MSE/RMSE table, NDCG formula, FID formula. Compare to [Cheat Sheets](./cheat-sheets.md).
 
 ### Day 30 — Mock interview II
 
@@ -237,10 +237,10 @@ Spend ~15 min every other day on Quiz mode in **Random Mix** to keep skills fres
 
 ## How to use this site for the roadmap
 
-1. Bookmark the [Dashboard]({{ "./dashboard/index.html" | relative_url }}). Open it daily.
+1. Bookmark the [Dashboard](./dashboard/index.html). Open it daily.
 2. The dashboard has **🃏 Flashcards**, **🎲 Random Mix**, and **📊 Mastery Map** — use them after Day 14.
 3. Track confidence (★1–5) on each question. Surface low-confidence questions first.
-4. The site's [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) and [Mnemonics]({{ "./mnemonics.md" | relative_url }}) are designed for daily 5-min recall.
+4. The site's [Cheat Sheets](./cheat-sheets.md) and [Mnemonics](./mnemonics.md) are designed for daily 5-min recall.
 
 ---
 

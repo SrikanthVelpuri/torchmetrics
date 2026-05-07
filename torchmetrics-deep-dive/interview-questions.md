@@ -5,7 +5,7 @@ nav_order: 14
 
 # Interview Questions
 
-A curated list of questions an ML-engineering interviewer might ask about TorchMetrics specifically — and the metric / evaluation engineering they probe more broadly. Each entry has a model answer; the **next page**, [Follow-Up Questions]({{ "./follow-up-questions.md" | relative_url }}), drills further.
+A curated list of questions an ML-engineering interviewer might ask about TorchMetrics specifically — and the metric / evaluation engineering they probe more broadly. Each entry has a model answer; the **next page**, [Follow-Up Questions](./follow-up-questions.md), drills further.
 
 > Use these as a self-test. If you can answer 18/25 confidently, you are well above the bar.
 
@@ -166,4 +166,4 @@ A two-rank DDP test where each rank `update`s a disjoint shard of the data, call
 
 ---
 
-Continue to [Follow-Up Questions]({{ "./follow-up-questions.md" | relative_url }}) for the harder drill-downs.
+Continue to [Follow-Up Questions](./follow-up-questions.md) for the harder drill-downs.

@@ -25,7 +25,7 @@ These class attributes are **declarative metadata**. Subclasses set them so othe
 
 - `is_differentiable=True` allows the metric to be used inside a loss.
 - `higher_is_better` controls "best so far" tracking in `MinMaxMetric` / `MetricTracker`.
-- `full_state_update` — see [Core Concepts]({{ "./core-concepts.md" | relative_url }}); decides which `forward()` path is used.
+- `full_state_update` — see [Core Concepts](./core-concepts.md); decides which `forward()` path is used.
 - The `plot_*` attributes seed the default y-axis range when calling `metric.plot()`.
 
 `Metric` extends both `nn.Module` (so `.to()`, `state_dict()`, hooks, JIT all work) and `ABC` (so `update` and `compute` must be implemented).

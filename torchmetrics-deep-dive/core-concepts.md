@@ -166,4 +166,4 @@ This optimization can be **3–10×** faster on collections of stat-score-derive
 5. Set `full_state_update=False` whenever your state is summable for a free speedup.
 6. `MetricCollection` + compute groups can dramatically reduce wasted work.
 
-Move on to [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }}) for the line-by-line view.
+Move on to [Metric Class Internals](./metric-class-internals.md) for the line-by-line view.

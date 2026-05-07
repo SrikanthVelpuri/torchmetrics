@@ -119,24 +119,24 @@ TorchMetrics handles all of these in the base class, so the metric author only w
 
 | Page | What you'll learn |
 |---|---|
-| [Getting Started]({{ "./getting-started.md" | relative_url }}) | Install, first metric, functional vs. modular. |
-| [Core Concepts]({{ "./core-concepts.md" | relative_url }}) | `update`/`compute`/`reset`, state, the metric lifecycle. |
-| [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }}) | What actually happens inside `Metric.__init__`, `forward`, `_sync_dist`. |
-| [Classification Metrics]({{ "./classification-metrics.md" | relative_url }}) | Binary / multiclass / multilabel, threshold handling, AUROC math. |
-| [Regression Metrics]({{ "./regression-metrics.md" | relative_url }}) | MAE, MSE, R2, correlations, quantile losses. |
-| [Retrieval Metrics]({{ "./retrieval-metrics.md" | relative_url }}) | MRR, MAP, NDCG, the `indexes=` argument. |
-| [Text, Audio, Image]({{ "./text-audio-image-metrics.md" | relative_url }}) | BLEU, ROUGE, BERTScore, FID, SSIM, PESQ, SI-SDR. |
-| [Distributed Training]({{ "./distributed-training.md" | relative_url }}) | How `all_gather` aggregation actually works under DDP. |
-| [PyTorch Lightning Integration]({{ "./pytorch-lightning-integration.md" | relative_url }}) | `self.log`, sync_dist, on_step vs. on_epoch. |
-| [Custom Metrics]({{ "./custom-metrics.md" | relative_url }}) | Building your own metric the right way. |
-| [Production Scenarios]({{ "./production-scenarios.md" | relative_url }}) | Drift monitoring, A/B tests, online evaluation. |
-| [Testing & Validation]({{ "./testing-and-validation.md" | relative_url }}) | How TorchMetrics tests itself; how to test yours. |
-| [Interview Questions]({{ "./interview-questions.md" | relative_url }}) | 25+ ML-engineering interview questions with model answers. |
-| [Follow-Up Questions]({{ "./follow-up-questions.md" | relative_url }}) | The "drill-down" questions interviewers actually ask. |
-| [System Design Questions]({{ "./system-design-questions.md" | relative_url }}) | Designing a metrics service for a recommender, an LLM, a CV pipeline. |
-| [ML ↔ Business Metrics]({{ "./ml-business-metrics.md" | relative_url }}) | Connecting ML metrics to business KPIs at American Airlines and Amazon. |
-| [Scenario Setups]({{ "./scenario-setups.md" | relative_url }}) | How metrics are wired in real ML systems (CV, NLP, speech, recsys, time-series, anomaly). |
-| [Troubleshooting]({{ "./troubleshooting.md" | relative_url }}) | The bugs you will hit and how to fix them. |
+| [Getting Started](./getting-started.md) | Install, first metric, functional vs. modular. |
+| [Core Concepts](./core-concepts.md) | `update`/`compute`/`reset`, state, the metric lifecycle. |
+| [Metric Class Internals](./metric-class-internals.md) | What actually happens inside `Metric.__init__`, `forward`, `_sync_dist`. |
+| [Classification Metrics](./classification-metrics.md) | Binary / multiclass / multilabel, threshold handling, AUROC math. |
+| [Regression Metrics](./regression-metrics.md) | MAE, MSE, R2, correlations, quantile losses. |
+| [Retrieval Metrics](./retrieval-metrics.md) | MRR, MAP, NDCG, the `indexes=` argument. |
+| [Text, Audio, Image](./text-audio-image-metrics.md) | BLEU, ROUGE, BERTScore, FID, SSIM, PESQ, SI-SDR. |
+| [Distributed Training](./distributed-training.md) | How `all_gather` aggregation actually works under DDP. |
+| [PyTorch Lightning Integration](./pytorch-lightning-integration.md) | `self.log`, sync_dist, on_step vs. on_epoch. |
+| [Custom Metrics](./custom-metrics.md) | Building your own metric the right way. |
+| [Production Scenarios](./production-scenarios.md) | Drift monitoring, A/B tests, online evaluation. |
+| [Testing & Validation](./testing-and-validation.md) | How TorchMetrics tests itself; how to test yours. |
+| [Interview Questions](./interview-questions.md) | 25+ ML-engineering interview questions with model answers. |
+| [Follow-Up Questions](./follow-up-questions.md) | The "drill-down" questions interviewers actually ask. |
+| [System Design Questions](./system-design-questions.md) | Designing a metrics service for a recommender, an LLM, a CV pipeline. |
+| [ML ↔ Business Metrics](./ml-business-metrics.md) | Connecting ML metrics to business KPIs at American Airlines and Amazon. |
+| [Scenario Setups](./scenario-setups.md) | How metrics are wired in real ML systems (CV, NLP, speech, recsys, time-series, anomaly). |
+| [Troubleshooting](./troubleshooting.md) | The bugs you will hit and how to fix them. |
 
 ---
 
@@ -152,11 +152,13 @@ Each domain page now also includes an **Interview Drill-Down** section with mult
 
 ---
 
-## 🎓 [Mastery Hub]({{ "./mastery-hub.md" | relative_url }}) — start here for interview prep
+## 🎓 [Mastery Hub](./mastery-hub.md) — start here for interview prep
 
 A standalone landing page that organizes everything below into a 7-tier learning path, with a 30-day roadmap, visual cheat sheets, mnemonics, decision trees, code challenges, debug exercises, and 10 company scenarios.
 
 If you only have time to bookmark one page, bookmark the Mastery Hub.
+
+> 📚 **Looking for every link in one place?** See [**All Pages — Site Map**](./all-pages.md).
 
 ---
 
@@ -181,14 +183,14 @@ Confidence ratings persist in `localStorage`. Color-coded sidebar pips show your
 
 | Page | Purpose |
 |---|---|
-| [🎓 Mastery Hub]({{ "./mastery-hub.md" | relative_url }}) | The master entry — everything organized into a 7-tier path. |
-| [📅 Mastery Roadmap]({{ "./mastery-roadmap.md" | relative_url }}) | 30 days, 45 min/day, structured. |
-| [📑 Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) | 18 visual one-pagers — print and pin. |
-| [🧠 Mnemonics]({{ "./mnemonics.md" | relative_url }}) | 21 memory hooks (RUUCC, MEPP, PRINCE, …). |
-| [🌳 Decision Trees]({{ "./metric-decision-tree.md" | relative_url }}) | "Which metric for X?" flowcharts. |
-| [📦 Wrappers Deep Dive]({{ "./wrappers-deep-dive.md" | relative_url }}) | All 11 wrappers with composition recipes. |
-| [➕ Aggregation, Clustering, Pairwise, Nominal]({{ "./aggregation-clustering-pairwise.md" | relative_url }}) | The under-documented metric families. |
-| [💻 Code Challenges]({{ "./code-challenges.md" | relative_url }}) | 12 implement-from-scratch problems. |
-| [🐛 Spot the Bug]({{ "./spot-the-bug.md" | relative_url }}) | 15 buggy snippets — debug, then check. |
-| [🔢 Numerical Pitfalls]({{ "./numerical-pitfalls.md" | relative_url }}) | NaN, precision, edge cases. |
-| [🏢 Extended Company Scenarios]({{ "./extended-company-scenarios.md" | relative_url }}) | Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, more. |
+| [🎓 Mastery Hub](./mastery-hub.md) | The master entry — everything organized into a 7-tier path. |
+| [📅 Mastery Roadmap](./mastery-roadmap.md) | 30 days, 45 min/day, structured. |
+| [📑 Cheat Sheets](./cheat-sheets.md) | 18 visual one-pagers — print and pin. |
+| [🧠 Mnemonics](./mnemonics.md) | 21 memory hooks (RUUCC, MEPP, PRINCE, …). |
+| [🌳 Decision Trees](./metric-decision-tree.md) | "Which metric for X?" flowcharts. |
+| [📦 Wrappers Deep Dive](./wrappers-deep-dive.md) | All 11 wrappers with composition recipes. |
+| [➕ Aggregation, Clustering, Pairwise, Nominal](./aggregation-clustering-pairwise.md) | The under-documented metric families. |
+| [💻 Code Challenges](./code-challenges.md) | 12 implement-from-scratch problems. |
+| [🐛 Spot the Bug](./spot-the-bug.md) | 15 buggy snippets — debug, then check. |
+| [🔢 Numerical Pitfalls](./numerical-pitfalls.md) | NaN, precision, edge cases. |
+| [🏢 Extended Company Scenarios](./extended-company-scenarios.md) | Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, more. |

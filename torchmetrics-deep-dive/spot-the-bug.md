@@ -479,8 +479,8 @@ class TestMetric(Metric):
 |---|---|
 | 13–15 / 15 | Production-ready. You'd catch these in PR review. |
 | 9–12 / 15 | Solid mid-level. Review the ones you missed; pattern-match. |
-| 5–8 / 15 | Re-read [Custom Metrics]({{ "./custom-metrics.md" | relative_url }}) and [Distributed Training]({{ "./distributed-training.md" | relative_url }}) carefully. |
-| < 5 / 15 | Start with [Core Concepts]({{ "./core-concepts.md" | relative_url }}) and [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }}). The patterns aren't yet in muscle memory. |
+| 5–8 / 15 | Re-read [Custom Metrics](./custom-metrics.md) and [Distributed Training](./distributed-training.md) carefully. |
+| < 5 / 15 | Start with [Core Concepts](./core-concepts.md) and [Metric Class Internals](./metric-class-internals.md). The patterns aren't yet in muscle memory. |
 
 ---
 
