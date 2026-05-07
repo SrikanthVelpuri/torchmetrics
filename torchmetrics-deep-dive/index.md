@@ -149,3 +149,15 @@ TorchMetrics handles all of these in the base class, so the metric author only w
 5. For staff-level prep, read **ML ↔ Business Metrics** and **Scenario Setups** — these tie the library to real product / company decisions.
 
 Each domain page now also includes an **Interview Drill-Down** section with multi-level follow-ups (Q → F1 → F1.1 → F1.1.1) so you can practice the way real interviewers escalate.
+
+---
+
+## 🎯 Interactive dashboard
+
+For a focused **revise + quiz** workflow, open the static dashboard:
+
+[**▶ Open the dashboard →**](./dashboard/index.html)
+
+- **Revise mode**: every topic summarized for fast review.
+- **Quiz mode**: interview questions with reveal-on-click multi-level follow-ups (Q → F1 → F1.1 → F1.1.1).
+- Works offline — just open `dashboard/index.html` in a browser. No build step.

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TorchMetrics Deep Dive — Revision & Interview Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">TM</div>
+      <div>
+        <div class="brand-title">TorchMetrics</div>
+        <div class="brand-sub">Deep Dive Dashboard</div>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="Search topics & questions…" />
+    </div>
+
+    <nav id="nav"></nav>
+
+    <div class="sidebar-footer">
+      <div class="legend">
+        <div><span class="dot dot-read"></span> Revise</div>
+        <div><span class="dot dot-quiz"></span> Quiz</div>
+      </div>
+      <div class="version">v1 · Generated</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="crumbs">
+        <span id="crumb-cat" class="crumb-cat">—</span>
+        <span class="crumb-sep">›</span>
+        <span id="crumb-topic" class="crumb-topic">Pick a topic</span>
+      </div>
+      <div class="modes">
+        <button class="mode-btn active" data-mode="read">📖 Revise</button>
+        <button class="mode-btn" data-mode="quiz">🎯 Quiz</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <div id="welcome" class="welcome">
+        <h1>TorchMetrics Deep Dive</h1>
+        <p class="lead">A revision & interview-prep dashboard. Pick a topic on the left to begin.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">📖</div>
+            <h3>Revise mode</h3>
+            <p>Concise summaries of every concept, with the formulae, code patterns, and decision rules you need.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Quiz mode</h3>
+            <p>Real interview questions with multi-level follow-ups (Q → F1 → F1.1 → F1.1.1). Reveal answers when you're ready.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏢</div>
+            <h3>Business scenarios</h3>
+            <p>How metrics map to KPIs at American Airlines and Amazon — delay prediction, overbooking, search ranking, fraud, and more.</p>
+          </div>
+        </div>
+        <div class="getting-started">
+          <h3>Suggested path</h3>
+          <ol>
+            <li>Foundations → <em>Getting Started</em>, <em>Core Concepts</em>, <em>Metric Class Internals</em></li>
+            <li>Pick a domain you care about (Classification / Regression / Retrieval / …)</li>
+            <li>Distributed Training + Lightning Integration</li>
+            <li>Production Scenarios + Custom Metrics</li>
+            <li>Switch to Quiz mode and stress-test yourself</li>
+            <li>Read ML ↔ Business and Scenario Setups for staff-level interviews</li>
+          </ol>
+        </div>
+      </div>
+
+      <article id="read-view" class="read-view hidden"></article>
+
+      <div id="quiz-view" class="quiz-view hidden"></div>
+    </section>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
