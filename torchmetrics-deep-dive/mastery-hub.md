@@ -61,9 +61,9 @@ You need all four to "answer any question." Most interview prep stops at concept
 
 You have to be able to write the lifecycle from memory in 60 seconds.
 
-- [Getting Started]({{ "./getting-started.md" | relative_url }})
-- [Core Concepts]({{ "./core-concepts.md" | relative_url }})
-- [Metric Class Internals]({{ "./metric-class-internals.md" | relative_url }})
+- [Getting Started](./getting-started.md)
+- [Core Concepts](./core-concepts.md)
+- [Metric Class Internals](./metric-class-internals.md)
 
 > **Self-check**: can you draw the lifecycle (Reset → Update → Update → Compute → Compute) and name the 4 standard `dim_zero_*` reductions without looking? If yes, advance.
 
@@ -71,18 +71,18 @@ You have to be able to write the lifecycle from memory in 60 seconds.
 
 Pick the domains you actually work in. Skim the others; you should know they exist and what they're for.
 
-- [Classification]({{ "./classification-metrics.md" | relative_url }}) — task taxonomy, AUROC vs AP, calibration.
-- [Regression]({{ "./regression-metrics.md" | relative_url }}) — MAE/MSE/wMAPE, R² gotchas.
-- [Retrieval]({{ "./retrieval-metrics.md" | relative_url }}) — `indexes`, NDCG/MRR.
-- [Text/Audio/Image]({{ "./text-audio-image-metrics.md" | relative_url }}) — BLEU/FID/PESQ.
-- [Aggregation, Clustering, Pairwise, Nominal]({{ "./aggregation-clustering-pairwise.md" | relative_url }}) — *the underdocumented families*.
+- [Classification](./classification-metrics.md) — task taxonomy, AUROC vs AP, calibration.
+- [Regression](./regression-metrics.md) — MAE/MSE/wMAPE, R² gotchas.
+- [Retrieval](./retrieval-metrics.md) — `indexes`, NDCG/MRR.
+- [Text/Audio/Image](./text-audio-image-metrics.md) — BLEU/FID/PESQ.
+- [Aggregation, Clustering, Pairwise, Nominal](./aggregation-clustering-pairwise.md) — *the underdocumented families*.
 
 ### Tier 2 — Distributed mastery
 
 This is where mid-level becomes senior.
 
-- [Distributed Training (DDP)]({{ "./distributed-training.md" | relative_url }})
-- [PyTorch Lightning Integration]({{ "./pytorch-lightning-integration.md" | relative_url }})
+- [Distributed Training (DDP)](./distributed-training.md)
+- [PyTorch Lightning Integration](./pytorch-lightning-integration.md)
 
 > **Self-check**: can you explain `_sync_dist` line by line, including the empty-rank case? If yes, advance.
 
@@ -90,36 +90,36 @@ This is where mid-level becomes senior.
 
 Real interview gold: implementing your own.
 
-- [Custom Metrics]({{ "./custom-metrics.md" | relative_url }})
-- [Wrappers Deep Dive]({{ "./wrappers-deep-dive.md" | relative_url }})
-- [Code Challenges]({{ "./code-challenges.md" | relative_url }}) — work all 12 cold.
+- [Custom Metrics](./custom-metrics.md)
+- [Wrappers Deep Dive](./wrappers-deep-dive.md)
+- [Code Challenges](./code-challenges.md) — work all 12 cold.
 
 ### Tier 4 — Production pragmatics
 
 The "I've actually shipped this" tier.
 
-- [Production Scenarios]({{ "./production-scenarios.md" | relative_url }})
-- [Scenario Setups]({{ "./scenario-setups.md" | relative_url }})
-- [Numerical Pitfalls]({{ "./numerical-pitfalls.md" | relative_url }})
-- [Spot the Bug]({{ "./spot-the-bug.md" | relative_url }})
-- [Testing & Validation]({{ "./testing-and-validation.md" | relative_url }})
-- [Troubleshooting]({{ "./troubleshooting.md" | relative_url }})
+- [Production Scenarios](./production-scenarios.md)
+- [Scenario Setups](./scenario-setups.md)
+- [Numerical Pitfalls](./numerical-pitfalls.md)
+- [Spot the Bug](./spot-the-bug.md)
+- [Testing & Validation](./testing-and-validation.md)
+- [Troubleshooting](./troubleshooting.md)
 
 ### Tier 5 — Business translation
 
 The "staff engineer" tier — connecting ML to dollars.
 
-- [ML ↔ Business Metrics]({{ "./ml-business-metrics.md" | relative_url }}) (American Airlines + Amazon)
-- [Extended Company Scenarios]({{ "./extended-company-scenarios.md" | relative_url }}) (Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, cybersecurity)
+- [ML ↔ Business Metrics](./ml-business-metrics.md) (American Airlines + Amazon)
+- [Extended Company Scenarios](./extended-company-scenarios.md) (Netflix, Uber, Stripe, Meta, Tesla, healthcare, finance, cybersecurity)
 
 ### Tier 6 — Interview combat
 
 Practice under pressure.
 
-- [Interview Questions]({{ "./interview-questions.md" | relative_url }})
-- [Follow-Up Questions]({{ "./follow-up-questions.md" | relative_url }})
-- [System Design Questions]({{ "./system-design-questions.md" | relative_url }})
-- [Dashboard]({{ "./dashboard/index.html" | relative_url }}) (Quiz mode + Flashcards + Random Mix)
+- [Interview Questions](./interview-questions.md)
+- [Follow-Up Questions](./follow-up-questions.md)
+- [System Design Questions](./system-design-questions.md)
+- [Dashboard](./dashboard/index.html) (Quiz mode + Flashcards + Random Mix)
 
 ---
 
@@ -127,19 +127,19 @@ Practice under pressure.
 
 ### To **scan quickly** (review at glance):
 
-- [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) — 18 visual one-pagers covering every major topic. Print these.
+- [Cheat Sheets](./cheat-sheets.md) — 18 visual one-pagers covering every major topic. Print these.
 
 ### To **decide fast** (when asked "which metric"):
 
-- [Metric Decision Trees]({{ "./metric-decision-tree.md" | relative_url }}) — 10 ASCII flowcharts walking branches.
+- [Metric Decision Trees](./metric-decision-tree.md) — 10 ASCII flowcharts walking branches.
 
 ### To **remember long-term**:
 
-- [Mnemonics]({{ "./mnemonics.md" | relative_url }}) — 21 memory hooks (RUUCC, MEPP, PRINCE, SUMMINCAT, …).
+- [Mnemonics](./mnemonics.md) — 21 memory hooks (RUUCC, MEPP, PRINCE, SUMMINCAT, …).
 
 ### To **practice actively**:
 
-- [Dashboard]({{ "./dashboard/index.html" | relative_url }}) — Quiz / Flashcards / Random Mix modes with confidence-rating spaced repetition.
+- [Dashboard](./dashboard/index.html) — Quiz / Flashcards / Random Mix modes with confidence-rating spaced repetition.
 
 ---
 
@@ -179,7 +179,7 @@ Add **1** for `MetricCollection`. Now you have **5-4-3-2-1** — a launch countd
 
 Walk through your imagined museum every morning. 5 rooms, ~20 metrics per room.
 
-Visit [Mnemonics]({{ "./mnemonics.md" | relative_url }}) → "The metric MUSEUM" for the layout.
+Visit [Mnemonics](./mnemonics.md) → "The metric MUSEUM" for the layout.
 
 ### 3. **Pattern-matching cards**
 
@@ -237,7 +237,7 @@ Tick these off. When all are ✅, you're ready.
 - [ ] Implement `WeightedMean` from memory in 5 min.
 - [ ] Implement `PinballLoss` (multi-quantile) from memory in 15 min.
 - [ ] Implement `DollarLoss` from memory in 10 min.
-- [ ] Find at least 12/15 bugs in [Spot the Bug]({{ "./spot-the-bug.md" | relative_url }}).
+- [ ] Find at least 12/15 bugs in [Spot the Bug](./spot-the-bug.md).
 - [ ] Pick the right wrapper for any "I want X but with Y" prompt.
 
 ### Production (Tier 4)
@@ -266,12 +266,12 @@ Tick these off. When all are ✅, you're ready.
 
 | Time | Read this |
 |---|---|
-| 5 min | [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) — Lifecycle + Classification chooser + Imbalance kit |
-| 15 min | + [Mnemonics]({{ "./mnemonics.md" | relative_url }}) — RUUCC, MEPP, PRINCE, CALM |
-| 30 min | + [Metric Decision Trees]({{ "./metric-decision-tree.md" | relative_url }}) Tree 1 + the domain you'll be asked about |
-| 1 hour | + [Spot the Bug]({{ "./spot-the-bug.md" | relative_url }}) (skim) + [Numerical Pitfalls]({{ "./numerical-pitfalls.md" | relative_url }}) (skim) |
-| Half day | Quiz mode in [Dashboard]({{ "./dashboard/index.html" | relative_url }}) on Random Mix |
-| Full day | Day 28 + Day 30 mock interviews from the [Roadmap]({{ "./mastery-roadmap.md" | relative_url }}) |
+| 5 min | [Cheat Sheets](./cheat-sheets.md) — Lifecycle + Classification chooser + Imbalance kit |
+| 15 min | + [Mnemonics](./mnemonics.md) — RUUCC, MEPP, PRINCE, CALM |
+| 30 min | + [Metric Decision Trees](./metric-decision-tree.md) Tree 1 + the domain you'll be asked about |
+| 1 hour | + [Spot the Bug](./spot-the-bug.md) (skim) + [Numerical Pitfalls](./numerical-pitfalls.md) (skim) |
+| Half day | Quiz mode in [Dashboard](./dashboard/index.html) on Random Mix |
+| Full day | Day 28 + Day 30 mock interviews from the [Roadmap](./mastery-roadmap.md) |
 
 ---
 
@@ -319,8 +319,8 @@ Patterns compress information. Once compressed, recall is fast even under pressu
 ## What to bookmark
 
 - 📌 This page (Mastery Hub) — the index.
-- 📌 [Cheat Sheets]({{ "./cheat-sheets.md" | relative_url }}) — the daily 5-min review.
-- 📌 [Decision Trees]({{ "./metric-decision-tree.md" | relative_url }}) — for "which metric" questions.
-- 📌 [Dashboard]({{ "./dashboard/index.html" | relative_url }}) — for daily practice.
+- 📌 [Cheat Sheets](./cheat-sheets.md) — the daily 5-min review.
+- 📌 [Decision Trees](./metric-decision-tree.md) — for "which metric" questions.
+- 📌 [Dashboard](./dashboard/index.html) — for daily practice.
 
 Three pages + the dashboard. That's your mastery loop.

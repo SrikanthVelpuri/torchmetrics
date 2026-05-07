@@ -199,7 +199,7 @@ print(clip.compute())   # higher = better text-image alignment
 
 ## 7. Detection metrics — the canonical mAP
 
-`torchmetrics.detection.MeanAveragePrecision` is the COCO-style implementation. Already covered in the [Scenario Setups]({{ "./scenario-setups.md" | relative_url }}). Two things worth re-emphasizing:
+`torchmetrics.detection.MeanAveragePrecision` is the COCO-style implementation. Already covered in the [Scenario Setups](./scenario-setups.md). Two things worth re-emphasizing:
 
 - **Always pass `compute_on_cpu=True`** — predictions and targets accumulate; large eval runs OOM otherwise.
 - **`class_metrics=True`** to get per-class AP for diagnosis. Log only worst-K class APs.

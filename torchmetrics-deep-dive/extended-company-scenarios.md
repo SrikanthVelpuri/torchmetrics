@@ -5,7 +5,7 @@ nav_order: 29
 
 # Extended Company Scenarios — Beyond AA & Amazon
 
-The [ML ↔ Business]({{ "./ml-business-metrics.md" | relative_url }}) page covers American Airlines and Amazon. This page extends to eight more companies / industries with the same multi-level interview drill-down format. Pick the one closest to the role you're interviewing for.
+The [ML ↔ Business](./ml-business-metrics.md) page covers American Airlines and Amazon. This page extends to eight more companies / industries with the same multi-level interview drill-down format. Pick the one closest to the role you're interviewing for.
 
 ---
 

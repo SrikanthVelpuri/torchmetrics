@@ -41,9 +41,10 @@ open torchmetrics-deep-dive/dashboard/index.html        # macOS
 
 ## 🎯 Start here
 
-If you only have time for one page, open this:
+If you only have time for one page, open one of these:
 
-📌 **[🎓 Mastery Hub](./mastery-hub.md)** — the landing page that organizes everything into a 7-tier learning path with bookmark recommendations.
+- 📚 **[All Pages — Site Map](./all-pages.md)** — every URL on this site in one navigable directory.
+- 🎓 **[Mastery Hub](./mastery-hub.md)** — the curated 7-tier learning path with bookmark recommendations.
 
 ---
 

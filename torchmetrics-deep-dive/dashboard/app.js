@@ -18,6 +18,28 @@
 (function () {
   const DATA = window.TM_DATA;
   const STORAGE_KEY = "tm-confidence";
+
+  // Map dashboard topic ids to the corresponding full Markdown page.
+  // Pages are siblings of the dashboard/ directory, so we use ../<page>.html.
+  const TOPIC_TO_PAGE = {
+    "getting-started": "../getting-started.html",
+    "core-concepts": "../core-concepts.html",
+    "metric-internals": "../metric-class-internals.html",
+    "classification": "../classification-metrics.html",
+    "regression": "../regression-metrics.html",
+    "retrieval": "../retrieval-metrics.html",
+    "tai-metrics": "../text-audio-image-metrics.html",
+    "ddp": "../distributed-training.html",
+    "lightning": "../pytorch-lightning-integration.html",
+    "custom-metrics": "../custom-metrics.html",
+    "production": "../production-scenarios.html",
+    "interview-quickfire": "../interview-questions.html",
+    "system-design": "../system-design-questions.html",
+    "aa-business": "../ml-business-metrics.html",
+    "amazon-business": "../ml-business-metrics.html",
+    "scenarios": "../scenario-setups.html",
+    "troubleshooting": "../troubleshooting.html",
+  };
   let currentTopicId = null;
   let currentMode = "read";          // read | quiz | flash
   let currentGlobalMode = null;       // random | flashcards-all | mastery | null
@@ -124,6 +146,8 @@
   }
   function updateBreadcrumbs() {
     const topic = DATA.topics.find((t) => t.id === currentTopicId);
+    const fullLink = document.getElementById("open-full-page");
+    if (fullLink) fullLink.classList.add("hidden");
     if (currentGlobalMode === "random") {
       document.getElementById("crumb-cat").textContent = "🎲 Global";
       document.getElementById("crumb-topic").textContent = "Random Mix";
@@ -146,6 +170,13 @@
     }
     document.getElementById("crumb-cat").textContent = topic.category;
     document.getElementById("crumb-topic").textContent = topic.title;
+    // Show the "open full page" link if this topic has a full Markdown page
+    const fullPage = TOPIC_TO_PAGE[topic.id];
+    if (fullLink && fullPage) {
+      fullLink.href = fullPage;
+      fullLink.classList.remove("hidden");
+      fullLink.textContent = "↗ Open full page";
+    }
   }
   function setMode(mode) {
     currentMode = mode;

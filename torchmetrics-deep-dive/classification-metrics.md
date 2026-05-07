@@ -56,7 +56,7 @@ From these four counts, you can derive almost every "single-number" classificati
 | Balanced Accuracy | (TPR + TNR) / 2 |
 | Negative Predictive Value | TN / (TN + FN) |
 
-**Why this matters**: when you build a `MetricCollection` of {Accuracy, Precision, Recall, F1}, TorchMetrics can detect they all derive from the same StatScores and compute them once — that's the **compute-groups** optimization mentioned in [Core Concepts]({{ "./core-concepts.md" | relative_url }}).
+**Why this matters**: when you build a `MetricCollection` of {Accuracy, Precision, Recall, F1}, TorchMetrics can detect they all derive from the same StatScores and compute them once — that's the **compute-groups** optimization mentioned in [Core Concepts](./core-concepts.md).
 
 ---
 
