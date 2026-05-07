@@ -1,0 +1,70 @@
+title: TorchMetrics Deep Dive
+description: A beginner-to-advanced learning site for TorchMetrics — concepts, internals, real-world usage, and interview prep.
+theme: jekyll-theme-cayman
+
+# Make markdown files render with proper code highlighting
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Default page front-matter so contributors don't need to add it manually
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+
+# Site-wide navigation links shown on every page
+navigation:
+  - title: Home
+    url: ./index.html
+  - title: Getting Started
+    url: ./getting-started.html
+  - title: Core Concepts
+    url: ./core-concepts.html
+  - title: Metric Class Internals
+    url: ./metric-class-internals.html
+  - title: Classification
+    url: ./classification-metrics.html
+  - title: Regression
+    url: ./regression-metrics.html
+  - title: Retrieval
+    url: ./retrieval-metrics.html
+  - title: Text / Audio / Image
+    url: ./text-audio-image-metrics.html
+  - title: Distributed Training
+    url: ./distributed-training.html
+  - title: PyTorch Lightning
+    url: ./pytorch-lightning-integration.html
+  - title: Custom Metrics
+    url: ./custom-metrics.html
+  - title: Production Scenarios
+    url: ./production-scenarios.html
+  - title: Testing & Validation
+    url: ./testing-and-validation.html
+  - title: Interview Questions
+    url: ./interview-questions.html
+  - title: Follow-Up Questions
+    url: ./follow-up-questions.html
+  - title: System Design
+    url: ./system-design-questions.html
+  - title: Troubleshooting
+    url: ./troubleshooting.html
+
+# GitHub Pages safe plugins
+plugins:
+  - jekyll-relative-links
+  - jekyll-seo-tag
+
+relative_links:
+  enabled: true
+  collections: true
+
+include:
+  - "*.md"
