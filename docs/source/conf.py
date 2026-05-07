@@ -129,6 +129,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_paramlinks",
     "myst_parser",
+    "sphinxcontrib.mermaid",
     "matplotlib.sphinxext.plot_directive",
     "lai_sphinx_theme.extensions.lightning",
 ]
