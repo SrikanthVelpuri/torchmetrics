@@ -1,0 +1,64 @@
+title: Metrics Encyclopedia — TorchMetrics Deep Dive
+description: Per-metric deep dives across every TorchMetrics domain — formulas, intuition, real-world scenarios, code, pitfalls, and interview question drill-downs.
+theme: jekyll-theme-cayman
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+
+navigation:
+  - title: Home
+    url: ./index.html
+  - title: Classification
+    url: ./classification/index.html
+  - title: Regression
+    url: ./regression/index.html
+  - title: Retrieval
+    url: ./retrieval/index.html
+  - title: Detection
+    url: ./detection/index.html
+  - title: Segmentation
+    url: ./segmentation/index.html
+  - title: Image
+    url: ./image/index.html
+  - title: Text
+    url: ./text/index.html
+  - title: Audio
+    url: ./audio/index.html
+  - title: Multimodal
+    url: ./multimodal/index.html
+  - title: Video
+    url: ./video/index.html
+  - title: Clustering
+    url: ./clustering/index.html
+  - title: Nominal
+    url: ./nominal/index.html
+  - title: Wrappers
+    url: ./wrappers/index.html
+  - title: Aggregation
+    url: ./aggregation/index.html
+  - title: Cross-family scenarios
+    url: ./scenarios/index.html
+
+plugins:
+  - jekyll-relative-links
+  - jekyll-seo-tag
+
+relative_links:
+  enabled: true
+  collections: true
+
+include:
+  - "*.md"

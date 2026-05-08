@@ -38,6 +38,50 @@ ______________________________________________________________________
 
 </div>
 
+# 📚 Deep-dive learning sites (in this repo)
+
+This fork ships two self-contained learning sites for TorchMetrics. They are **deployed together via GitHub Actions** ([`.github/workflows/deep-dive-pages.yml`](./.github/workflows/deep-dive-pages.yml)) and live at:
+
+- 🌐 **Live root**: <https://srikanthvelpuri.github.io/torchmetrics/> — TorchMetrics Deep Dive (framework site)
+- 🌐 **Live encyclopedia**: <https://srikanthvelpuri.github.io/torchmetrics/metrics-encyclopedia/> — per-metric reference + interview drill-downs
+- 🎯 **Interactive dashboard**: <https://srikanthvelpuri.github.io/torchmetrics/metrics-encyclopedia/dashboard/> — Revise / Quiz / Flashcards / Scenarios / Search
+
+The workflow rebuilds both sites on every push to `master` that touches `torchmetrics-deep-dive/**` or `metrics-encyclopedia/**`. After the first push, allow ~2 minutes for Pages to deploy.
+
+| Site | What it is | Source | Live URL |
+|---|---|---|---|
+| **TorchMetrics Deep Dive** | Framework-level mastery site — mnemonics, decision trees, code challenges, system design, mastery roadmap. | [`torchmetrics-deep-dive/`](./torchmetrics-deep-dive/README.md) | [/](https://srikanthvelpuri.github.io/torchmetrics/) |
+| **Metrics Encyclopedia** | Per-metric deep dive — every metric in every domain (formula, intuition, scenarios, code, pitfalls) plus interview Q&A drill-downs per family. | [`metrics-encyclopedia/`](./metrics-encyclopedia/index.md) | [/metrics-encyclopedia/](https://srikanthvelpuri.github.io/torchmetrics/metrics-encyclopedia/) |
+
+## Metrics Encyclopedia — quick links
+
+- 🏠 [Landing page](./metrics-encyclopedia/index.md) — full domain map (15 families)
+- 🏢 [Cross-family scenarios](./metrics-encyclopedia/scenarios/index.md) — 25 production systems → metric stacks
+- 🎯 [Interactive dashboard](./metrics-encyclopedia/dashboard/index.html) — Revise / Quiz / Flashcards / Scenarios / Search (open in browser)
+- 📦 [Deployment guide](./metrics-encyclopedia/DEPLOYMENT.md) — publish locally, on GitHub Pages, or Netlify/Vercel/etc.
+
+### Per-domain pages
+
+| Domain | Deep dive | Interview Q&A |
+|---|---|---|
+| Classification (28 metrics) | [page](./metrics-encyclopedia/classification/index.md) | [interview](./metrics-encyclopedia/classification/interview-deep-dive.md) |
+| Regression (22) | [page](./metrics-encyclopedia/regression/index.md) | [interview](./metrics-encyclopedia/regression/interview-deep-dive.md) |
+| Retrieval (10) | [page](./metrics-encyclopedia/retrieval/index.md) | [interview](./metrics-encyclopedia/retrieval/interview-deep-dive.md) |
+| Detection (8) | [page](./metrics-encyclopedia/detection/index.md) | [interview](./metrics-encyclopedia/detection/interview-deep-dive.md) |
+| Segmentation (4) | [page](./metrics-encyclopedia/segmentation/index.md) | [interview](./metrics-encyclopedia/segmentation/interview-deep-dive.md) |
+| Image quality (23) | [page](./metrics-encyclopedia/image/index.md) | [interview](./metrics-encyclopedia/image/interview-deep-dive.md) |
+| Text / NLP (16) | [page](./metrics-encyclopedia/text/index.md) | [interview](./metrics-encyclopedia/text/interview-deep-dive.md) |
+| Audio (11) | [page](./metrics-encyclopedia/audio/index.md) | [interview](./metrics-encyclopedia/audio/interview-deep-dive.md) |
+| Clustering (11) | [page](./metrics-encyclopedia/clustering/index.md) | [interview](./metrics-encyclopedia/clustering/interview-deep-dive.md) |
+| Nominal / categorical (5) | [page](./metrics-encyclopedia/nominal/index.md) | [interview](./metrics-encyclopedia/nominal/interview-deep-dive.md) |
+| Multimodal / video / shape (5) | [page](./metrics-encyclopedia/multimodal/index.md) | [interview](./metrics-encyclopedia/multimodal/interview-deep-dive.md) |
+| Wrappers (10) | [page](./metrics-encyclopedia/wrappers/index.md) | [interview](./metrics-encyclopedia/wrappers/interview-deep-dive.md) |
+| Aggregation (8) | [page](./metrics-encyclopedia/aggregation/index.md) | (combined with wrappers) |
+
+> Open the dashboard locally with `start metrics-encyclopedia\dashboard\index.html` (Windows) / `open metrics-encyclopedia/dashboard/index.html` (macOS) / `xdg-open` (Linux). Self-contained: no server needed.
+
+______________________________________________________________________
+
 # Looking for GPUs?
 
 Over 340,000 developers use [Lightning Cloud](https://lightning.ai/?utm_source=tm_readme&utm_medium=referral&utm_campaign=tm_readme) - purpose-built for PyTorch and PyTorch Lightning.

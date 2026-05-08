@@ -5,6 +5,8 @@ nav_order: 1
 
 # TorchMetrics Deep Dive
 
+> 📘 **Per-metric reference?** This site teaches the *framework*. For per-metric deep dives across every domain (formula, scenario, code, pitfalls) plus interview Q&A drill-downs, open the sister site: **[Metrics Encyclopedia →](./metrics-encyclopedia/)**
+
 A complete, beginner-to-advanced learning site that explains **TorchMetrics** — the official metrics library for PyTorch and PyTorch Lightning — from first principles through production-grade design trade-offs and ML interview preparation.
 
 > Companion guide to the source repository at

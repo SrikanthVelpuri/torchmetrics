@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Metrics Encyclopedia — Interactive Dashboard</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #273449;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #fbbf24;
+    --good: #22c55e;
+    --warn: #f97316;
+    --bad: #ef4444;
+    --border: #334155;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--text); line-height: 1.55; }
+  header { padding: 16px 24px; background: var(--panel); border-bottom: 1px solid var(--border);
+           display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  header h1 { margin: 0; font-size: 1.2rem; }
+  header .crumb { color: var(--muted); font-size: 0.9rem; }
+  header .nav-links { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; }
+  header .nav-links a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+  header .nav-links a:hover { text-decoration: underline; }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
+  @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } aside { display: none; } }
+
+  aside { background: var(--panel); border-right: 1px solid var(--border); padding: 16px;
+          overflow-y: auto; max-height: calc(100vh - 60px); position: sticky; top: 60px; }
+  aside h3 { color: var(--accent); margin: 16px 0 8px; font-size: 0.9rem;
+             text-transform: uppercase; letter-spacing: 0.05em; }
+  aside h3:first-child { margin-top: 0; }
+  aside .family-list { list-style: none; padding: 0; margin: 0; }
+  aside .family-list li { padding: 6px 8px; cursor: pointer; border-radius: 4px;
+                          font-size: 0.9rem; transition: background 0.15s; }
+  aside .family-list li:hover { background: var(--panel-2); }
+  aside .family-list li.active { background: var(--accent); color: var(--bg); font-weight: 600; }
+
+  main { padding: 24px; overflow-y: auto; max-height: calc(100vh - 60px); }
+  .mode-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .mode-tab { padding: 8px 14px; background: var(--panel); border: 1px solid var(--border);
+              border-radius: 6px; color: var(--text); cursor: pointer; font-size: 0.9rem; }
+  .mode-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent);
+                     font-weight: 600; }
+  .mode-tab:hover:not(.active) { background: var(--panel-2); }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+          padding: 20px; margin-bottom: 16px; }
+  .card h2 { margin-top: 0; color: var(--accent); }
+  .card .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
+  .card .meta span { margin-right: 12px; }
+  .card .row { margin: 8px 0; }
+  .card .row .label { color: var(--accent-2); font-weight: 600; display: inline-block;
+                       min-width: 130px; }
+  .card pre { background: #0a0f1c; border: 1px solid var(--border); border-radius: 6px;
+              padding: 12px; overflow-x: auto; font-size: 0.85rem; }
+  .card code { background: #0a0f1c; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+  .card pre code { background: transparent; padding: 0; }
+
+  .question { background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+              padding: 16px; margin-bottom: 12px; cursor: pointer; }
+  .question h3 { margin: 0; color: var(--accent); font-size: 1rem; }
+  .question .ans { margin-top: 12px; display: none; }
+  .question.open .ans { display: block; }
+  .question .followup { margin-left: 16px; padding-left: 12px; border-left: 2px solid var(--border);
+                        margin-top: 10px; }
+  .question .followup .q { color: var(--accent-2); font-weight: 600; }
+
+  .flashcard { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+               padding: 32px; margin: 16px auto; max-width: 600px; min-height: 280px;
+               cursor: pointer; display: flex; flex-direction: column;
+               justify-content: center; align-items: center; text-align: center;
+               transition: transform 0.3s; }
+  .flashcard.flipped { background: var(--panel-2); }
+  .flashcard .front, .flashcard .back { width: 100%; }
+  .flashcard .back { display: none; }
+  .flashcard.flipped .front { display: none; }
+  .flashcard.flipped .back { display: block; }
+  .flashcard .cat { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; }
+  .flashcard h3 { margin: 8px 0; color: var(--accent); }
+  .flashcard .hint { color: var(--muted); font-size: 0.85rem; margin-top: 16px; font-style: italic; }
+  .flashcard-controls { display: flex; gap: 12px; justify-content: center; margin-top: 16px; }
+  .btn { padding: 8px 16px; background: var(--panel); border: 1px solid var(--border);
+         border-radius: 6px; color: var(--text); cursor: pointer; font-size: 0.9rem; }
+  .btn:hover { background: var(--panel-2); }
+  .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent);
+                 font-weight: 600; }
+
+  .quiz-stat { display: inline-block; padding: 4px 10px; background: var(--panel-2);
+               border-radius: 4px; color: var(--muted); font-size: 0.85rem; margin-right: 8px; }
+
+  .search-box { width: 100%; padding: 8px 12px; background: var(--panel-2); border: 1px solid var(--border);
+                border-radius: 6px; color: var(--text); margin-bottom: 12px; font-size: 0.9rem; }
+  .search-box:focus { outline: 2px solid var(--accent); }
+
+  .scenario-card { background: var(--panel); border-left: 3px solid var(--accent); border-radius: 6px;
+                   padding: 14px 16px; margin-bottom: 12px; }
+  .scenario-card h3 { margin: 0 0 8px; color: var(--accent); }
+  .scenario-card .stack { font-size: 0.9rem; }
+  .scenario-card .trap { color: var(--warn); font-size: 0.85rem; margin-top: 8px; font-style: italic; }
+
+  .empty { color: var(--muted); padding: 40px; text-align: center; }
+  .badge { display: inline-block; padding: 2px 8px; background: var(--accent); color: var(--bg);
+           border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .direction-up { color: var(--good); }
+  .direction-down { color: var(--bad); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 Metrics Encyclopedia</h1>
+  <span class="crumb">Interactive dashboard for TorchMetrics deep-dive</span>
+  <div class="nav-links">
+    <a href="../index.md">Home</a>
+    <a href="../scenarios/index.md">Scenarios</a>
+    <a href="../classification/index.md">Classification</a>
+    <a href="../regression/index.md">Regression</a>
+    <a href="../retrieval/index.md">Retrieval</a>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <h3>Family</h3>
+    <ul class="family-list" id="family-list">
+      <!-- filled by JS -->
+    </ul>
+    <h3>Mode shortcuts</h3>
+    <div style="font-size: 0.85rem; color: var(--muted);">
+      <div><kbd>R</kbd> Revise mode</div>
+      <div><kbd>Q</kbd> Quiz mode</div>
+      <div><kbd>F</kbd> Flashcards</div>
+      <div><kbd>S</kbd> Scenarios</div>
+      <div><kbd>Space</kbd> Flip card</div>
+      <div><kbd>←</kbd> <kbd>→</kbd> Navigate</div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="revise">📖 Revise</button>
+      <button class="mode-tab" data-mode="quiz">🎯 Quiz</button>
+      <button class="mode-tab" data-mode="flashcards">🃏 Flashcards</button>
+      <button class="mode-tab" data-mode="scenarios">🏢 Scenarios</button>
+      <button class="mode-tab" data-mode="search">🔍 Search</button>
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+let currentFamily = "classification";
+let currentMode = "revise";
+let flashcardIndex = 0;
+let flashcardFlipped = false;
+
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+function renderFamilyList() {
+  const list = $("#family-list");
+  list.innerHTML = "";
+  Object.keys(METRICS).forEach(fam => {
+    const li = document.createElement("li");
+    li.textContent = METRICS[fam].title + " (" + METRICS[fam].metrics.length + ")";
+    li.dataset.family = fam;
+    if (fam === currentFamily) li.classList.add("active");
+    li.onclick = () => { currentFamily = fam; renderFamilyList(); render(); };
+    list.appendChild(li);
+  });
+}
+
+function render() {
+  if (currentMode === "revise") return renderRevise();
+  if (currentMode === "quiz") return renderQuiz();
+  if (currentMode === "flashcards") return renderFlashcards();
+  if (currentMode === "scenarios") return renderScenarios();
+  if (currentMode === "search") return renderSearch();
+}
+
+function renderRevise() {
+  const fam = METRICS[currentFamily];
+  const c = $("#content");
+  c.innerHTML = `<h2 style="margin-top:0;">${fam.title} — ${fam.metrics.length} metrics</h2>
+                 <p style="color:var(--muted);">${fam.summary || ""}</p>`;
+  fam.metrics.forEach(m => {
+    const dir = m.direction === "up"
+      ? '<span class="direction-up">↑ higher better</span>'
+      : '<span class="direction-down">↓ lower better</span>';
+    c.innerHTML += `
+      <div class="card">
+        <h2>${m.name}</h2>
+        <div class="meta">
+          <span><strong>Range:</strong> ${m.range}</span>
+          <span>${dir}</span>
+          ${m.task ? `<span><strong>Task:</strong> ${m.task}</span>` : ""}
+        </div>
+        <div class="row"><span class="label">What:</span> ${m.what}</div>
+        <div class="row"><span class="label">When to use:</span> ${m.when}</div>
+        ${m.notWhen ? `<div class="row"><span class="label">When NOT to use:</span> ${m.notWhen}</div>` : ""}
+        <div class="row"><span class="label">Real-world:</span> ${m.scenario}</div>
+        ${m.code ? `<div class="row"><span class="label">Code:</span></div><pre><code>${m.code}</code></pre>` : ""}
+        ${m.pitfall ? `<div class="row"><span class="label">Pitfall:</span> ${m.pitfall}</div>` : ""}
+      </div>
+    `;
+  });
+}
+
+function renderQuiz() {
+  const fam = METRICS[currentFamily];
+  const c = $("#content");
+  c.innerHTML = `<h2 style="margin-top:0;">${fam.title} — interview drill-downs</h2>
+                 <p style="color:var(--muted);">Click a question to expand the answer and follow-ups.</p>`;
+  if (!fam.questions || fam.questions.length === 0) {
+    c.innerHTML += `<div class="empty">No questions defined for this family yet. See the
+                    <a href="../${currentFamily}/interview-deep-dive.md" style="color:var(--accent);">markdown page</a>.</div>`;
+    return;
+  }
+  fam.questions.forEach((q, i) => {
+    const fu = (q.followups || []).map(f => `
+      <div class="followup">
+        <span class="q">F${i+1}.${(q.followups.indexOf(f)+1)}</span> ${f.q}
+        <div style="margin-top:6px; color:var(--text);">${f.a}</div>
+      </div>`).join("");
+    c.innerHTML += `
+      <div class="question" data-idx="${i}">
+        <h3>Q${i+1}. ${q.q}</h3>
+        <div class="ans">
+          <p>${q.a}</p>
+          ${fu}
+        </div>
+      </div>
+    `;
+  });
+  $$(".question").forEach(el => el.onclick = () => el.classList.toggle("open"));
+}
+
+function renderFlashcards() {
+  const fam = METRICS[currentFamily];
+  const c = $("#content");
+  if (flashcardIndex >= fam.metrics.length) flashcardIndex = 0;
+  const m = fam.metrics[flashcardIndex];
+  c.innerHTML = `
+    <h2 style="margin-top:0;">${fam.title} — flashcard ${flashcardIndex+1}/${fam.metrics.length}</h2>
+    <div class="flashcard ${flashcardFlipped ? 'flipped' : ''}" id="card">
+      <div class="front">
+        <div class="cat">${fam.title}</div>
+        <h3>${m.name}</h3>
+        <p style="color:var(--muted);">What does it compute, when do you use it?</p>
+        <div class="hint">Click or press Space to flip</div>
+      </div>
+      <div class="back">
+        <div class="cat">${m.name}</div>
+        <p style="margin-top:0;"><strong>What:</strong> ${m.what}</p>
+        <p><strong>When:</strong> ${m.when}</p>
+        <p><strong>Range:</strong> ${m.range} · ${m.direction === "up" ? "↑" : "↓"}</p>
+        <p style="font-size:0.85rem; color:var(--muted);">${m.scenario}</p>
+      </div>
+    </div>
+    <div class="flashcard-controls">
+      <button class="btn" onclick="flashcardPrev()">← Prev</button>
+      <button class="btn primary" onclick="flashcardFlip()">Flip</button>
+      <button class="btn" onclick="flashcardNext()">Next →</button>
+    </div>
+  `;
+  $("#card").onclick = flashcardFlip;
+}
+function flashcardNext() { flashcardIndex++; flashcardFlipped = false; render(); }
+function flashcardPrev() { flashcardIndex = Math.max(0, flashcardIndex-1); flashcardFlipped = false; render(); }
+function flashcardFlip() { flashcardFlipped = !flashcardFlipped; render(); }
+
+function renderScenarios() {
+  const c = $("#content");
+  c.innerHTML = `<h2 style="margin-top:0;">Cross-family scenarios — 25 production systems</h2>
+                 <p style="color:var(--muted);">Each scenario shows the metric stack and the trap.</p>`;
+  SCENARIOS.forEach(s => {
+    c.innerHTML += `
+      <div class="scenario-card">
+        <h3>${s.name}</h3>
+        <div class="stack"><strong>Stack:</strong> ${s.stack}</div>
+        <div style="margin-top:6px; font-size:0.85rem; color:var(--muted);">${s.why}</div>
+        ${s.trap ? `<div class="trap">Trap: ${s.trap}</div>` : ""}
+      </div>
+    `;
+  });
+}
+
+function renderSearch() {
+  const c = $("#content");
+  c.innerHTML = `
+    <h2 style="margin-top:0;">Search across all metrics</h2>
+    <input class="search-box" id="search-input" placeholder="Type a metric name, scenario, or keyword...">
+    <div id="search-results"></div>
+  `;
+  const input = $("#search-input");
+  input.focus();
+  input.oninput = () => doSearch(input.value);
+  doSearch("");
+}
+function doSearch(query) {
+  const results = $("#search-results");
+  if (!query) { results.innerHTML = `<div class="empty">Type to search...</div>`; return; }
+  const q = query.toLowerCase();
+  let html = "";
+  Object.keys(METRICS).forEach(fam => {
+    METRICS[fam].metrics.forEach(m => {
+      const text = (m.name + " " + m.what + " " + m.when + " " + m.scenario + " " + (m.notWhen || "") + " " + (m.pitfall || "")).toLowerCase();
+      if (text.includes(q)) {
+        html += `
+          <div class="card">
+            <h2>${m.name} <span class="badge">${METRICS[fam].title}</span></h2>
+            <div class="row"><span class="label">What:</span> ${m.what}</div>
+            <div class="row"><span class="label">When:</span> ${m.when}</div>
+            <div class="row"><span class="label">Real-world:</span> ${m.scenario}</div>
+          </div>
+        `;
+      }
+    });
+  });
+  results.innerHTML = html || `<div class="empty">No matches.</div>`;
+}
+
+// Mode switching
+$$(".mode-tab").forEach(tab => {
+  tab.onclick = () => {
+    currentMode = tab.dataset.mode;
+    $$(".mode-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    flashcardIndex = 0; flashcardFlipped = false;
+    render();
+  };
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "r" || e.key === "R") setMode("revise");
+  if (e.key === "q" || e.key === "Q") setMode("quiz");
+  if (e.key === "f" || e.key === "F") setMode("flashcards");
+  if (e.key === "s" || e.key === "S") setMode("scenarios");
+  if (e.key === "/") { e.preventDefault(); setMode("search"); }
+  if (currentMode === "flashcards") {
+    if (e.key === " ") { e.preventDefault(); flashcardFlip(); }
+    if (e.key === "ArrowRight") flashcardNext();
+    if (e.key === "ArrowLeft") flashcardPrev();
+  }
+});
+function setMode(mode) {
+  currentMode = mode;
+  $$(".mode-tab").forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
+  flashcardIndex = 0; flashcardFlipped = false;
+  render();
+}
+
+renderFamilyList();
+render();
+</script>
+</body>
+</html>

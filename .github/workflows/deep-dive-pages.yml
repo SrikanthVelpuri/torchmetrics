@@ -1,10 +1,11 @@
-name: Deploy Deep Dive site to GitHub Pages
+name: Deploy Pages (Deep Dive + Metrics Encyclopedia)
 
 on:
   push:
     branches: [master]
     paths:
       - "torchmetrics-deep-dive/**"
+      - "metrics-encyclopedia/**"
       - ".github/workflows/deep-dive-pages.yml"
   workflow_dispatch:
 
@@ -15,7 +16,7 @@ permissions:
 
 # Allow only one concurrent deployment, queueing later runs.
 concurrency:
-  group: deep-dive-pages
+  group: pages
   cancel-in-progress: false
 
 jobs:
@@ -28,11 +29,31 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
+      # Build the metrics-encyclopedia site into a temp dir first.
+      # We do this before the root site so its destination (./_site) is empty
+      # when jekyll-build-pages cleans it.
+      - name: Build metrics-encyclopedia
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./metrics-encyclopedia
+          destination: ./_metrics_encyclopedia
+
+      # Build the torchmetrics-deep-dive site as the root site.
+      - name: Build torchmetrics-deep-dive (root)
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./torchmetrics-deep-dive
           destination: ./_site
+
+      # Mount the encyclopedia under /metrics-encyclopedia/ inside the root site.
+      - name: Mount metrics-encyclopedia at /metrics-encyclopedia/
+        run: |
+          mkdir -p ./_site/metrics-encyclopedia
+          cp -r ./_metrics_encyclopedia/. ./_site/metrics-encyclopedia/
+          echo "--- top of _site ---"
+          ls -la ./_site
+          echo "--- metrics-encyclopedia ---"
+          ls -la ./_site/metrics-encyclopedia | head -50
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
